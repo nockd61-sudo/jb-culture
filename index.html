@@ -3,105 +3,221 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>전북문화예술소식 | 14개 시·군 통합 문화플랫폼</title>
+
+<title>전북 문화예술소식 | 14개 시·군 통합 플랫폼</title>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans KR',Arial,sans-serif;background:#f3fbfb;color:#111}
-button,input,textarea,select{font-family:inherit}
-header{height:74px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.logo{font-weight:900;font-size:24px;line-height:1.15}
-.logo small{display:block;color:#1976d2;font-size:12px}
-nav{display:flex;gap:34px;font-weight:800}
-nav a{cursor:pointer}
-.right{font-weight:800}
+body{
+  margin:0;
+  font-family:'Noto Sans KR',Arial,sans-serif;
+  background:#0b1a2b;
+  color:#fff;
+}
+a{text-decoration:none;color:inherit}
+
+header{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  position:fixed;
+  width:100%;
+  z-index:100;
+  background:rgba(10,20,40,0.6);
+  backdrop-filter:blur(10px);
+}
+
+.logo{
+  font-weight:900;
+  font-size:22px;
+}
+.logo span{
+  display:block;
+  font-size:11px;
+  color:#6fb3ff;
+}
+
+nav{
+  display:flex;
+  gap:30px;
+  font-weight:700;
+}
 
 .hero{
+  height:720px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding-top:60px;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,180,90,.25), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(70,130,255,.25), transparent 30%),
+    linear-gradient(135deg, #071a2f 0%, #0e2f4d 40%, #1d4f6f 70%, #e9f2ee 140%);
+}
+
+.hero-inner{
+  max-width:900px;
+}
+
+.hero h1{
+  font-size:58px;
+  font-weight:900;
+  line-height:1.2;
+  margin:0;
+  letter-spacing:-2px;
+}
+
+.hero h1 span{
+  color:#6a7cff;
+}
+
+.hero p{
+  margin-top:18px;
+  font-size:20px;
+  color:#cbd5e1;
+  font-weight:600;
+}
+
+.cta{
+  margin-top:30px;
+}
+.cta button{
+  border:0;
+  background:#5b7cff;
+  color:#fff;
+  padding:14px 28px;
+  border-radius:999px;
+  font-weight:900;
+  cursor:pointer;
+  font-size:15px;
+}
+
+main{
+  max-width:1200px;
+  margin:-140px auto 80px;
+  padding:0 20px;
   position:relative;
-  min-height:650px;
-  overflow:hidden;
-  background:#eaf7f5;
+  z-index:5;
 }
-.hero-bg{
-  position:absolute;
-  inset:0;
+
+.section{
+  background:#ffffff;
+  color:#111;
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+}
+
+.section h2{
+  margin:0;
+  font-size:28px;
+  font-weight:900;
+}
+
+.section p{
+  margin:6px 0 20px;
+  color:#666;
+  font-weight:600;
+}
+
+.city-grid{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
-  grid-template-rows:repeat(2,1fr);
-  opacity:.88;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
-.hero-bg div{background-size:cover;background-position:center}
-.hero-bg div::after{
-  content:"";
-  display:block;
+
+.city-card{
+  height:160px;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.city-card:hover{
+  transform:translateY(-6px);
+}
+
+.city-card img{
   width:100%;
   height:100%;
-  background:rgba(255,255,255,.28);
+  object-fit:cover;
 }
-.hero::after{
+
+.city-card::after{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.9));
+  background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.1));
 }
-.hero-content{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  padding:95px 20px 170px;
+
+.city-card h3{
+  position:absolute;
+  bottom:14px;
+  left:14px;
+  color:#fff;
+  margin:0;
+  z-index:1;
+  font-size:20px;
 }
-.hero h1{font-size:56px;line-height:1.18;margin:0 0 14px;font-weight:900;letter-spacing:-2px}
-.hero h1 span{color:#4f46d8;font-size:68px}
-.hero p{font-size:20px;font-weight:700;color:#444;margin:0}
 
-main{max-width:1280px;margin:-115px auto 80px;padding:0 30px;position:relative;z-index:3}
-.panel{background:white;border-radius:28px;padding:28px;box-shadow:0 15px 45px rgba(0,0,0,.09)}
-.title-row{margin-bottom:22px}
-.title-row h2{margin:0;font-size:30px;font-weight:900}
-.title-row p{margin:7px 0 0;color:#666;font-weight:700}
+.detail{
+  display:none;
+  margin-top:30px;
+  background:#fff;
+  color:#111;
+  border-radius:24px;
+  padding:24px;
+}
 
-.city-cards{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}
-.city-card{height:150px;border-radius:20px;overflow:hidden;position:relative;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.16)}
-.city-card img{width:100%;height:100%;object-fit:cover;transition:.25s}
-.city-card:hover img{transform:scale(1.08)}
-.city-card:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.68),rgba(0,0,0,.04))}
-.city-card h3{position:absolute;left:12px;bottom:12px;color:white;z-index:1;margin:0;font-size:18px}
-.city-card span{position:absolute;right:9px;top:9px;z-index:1;background:rgba(255,255,255,.92);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900}
-
-.info-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:28px}
-.news-list div{border-bottom:1px solid #eee;padding:14px 0;font-weight:800}
-.promo{background:linear-gradient(135deg,#b7f3e4,#e5fbff)}
-.promo h2{font-size:25px;line-height:1.35;margin-top:0}
-.promo p{font-size:17px;font-weight:700;line-height:1.5}
-.promo button{border:0;background:#064c3c;color:white;border-radius:999px;padding:13px 20px;font-weight:900;cursor:pointer}
-
-.detail{display:none;margin-top:28px}
 .detail.active{display:block}
-.detail-layout{display:grid;grid-template-columns:1fr 380px;gap:22px}
-.item{border:1px solid #e6edf2;background:#fbfdff;border-radius:18px;padding:17px;margin-bottom:12px}
-.upload{background:#f4fbf8;border-radius:22px;padding:20px}
-.upload input,.upload textarea,.upload select{width:100%;border:1px solid #d8e4e8;border-radius:13px;padding:12px;margin-bottom:9px}
-.upload textarea{height:100px;resize:none}
-.upload button{width:100%;border:0;background:#176bd6;color:white;border-radius:14px;padding:14px;font-weight:900;cursor:pointer}
-.close{float:right;border:0;background:#102033;color:white;border-radius:999px;padding:10px 18px;font-weight:900;cursor:pointer}
 
-footer{background:#102033;color:white;text-align:center;padding:34px 20px;font-weight:600}
-
-@media(max-width:1000px){
-  nav{display:none}
-  .hero-bg{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(7,1fr)}
-  .hero h1{font-size:36px}
-  .hero h1 span{font-size:44px}
-  .city-cards{grid-template-columns:repeat(2,1fr)}
-  .info-grid,.detail-layout{grid-template-columns:1fr}
+.news-item{
+  padding:14px 0;
+  border-bottom:1px solid #eee;
+  font-weight:700;
 }
-@media(max-width:560px){
-  header{padding:0 18px}
-  .right{display:none}
-  .hero-content{padding-top:70px}
-  .hero h1{font-size:31px}
-  .hero h1 span{font-size:38px}
-  .city-cards{grid-template-columns:1fr}
+
+.upload{
+  margin-top:20px;
+}
+.upload input,
+.upload textarea{
+  width:100%;
+  margin-bottom:10px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ddd;
+}
+.upload button{
+  width:100%;
+  padding:14px;
+  border:0;
+  background:#5b7cff;
+  color:#fff;
+  border-radius:10px;
+  font-weight:900;
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  color:#aaa;
+}
+
+@media(max-width:900px){
+  .hero h1{font-size:38px}
+  .city-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:500px){
+  .hero h1{font-size:28px}
+  .city-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -109,185 +225,90 @@ footer{background:#102033;color:white;text-align:center;padding:34px 20px;font-w
 <body>
 
 <header>
-  <div class="logo">전북특별자치도<br>문화예술소식<small>14개 시·군 통합</small></div>
+  <div class="logo">
+    전북문화예술소식
+    <span>14개 시·군 통합 플랫폼</span>
+  </div>
+
   <nav>
-    <a onclick="scrollCities()">14개 시·군</a>
-    <a onclick="scrollInfo()">주요 소식</a>
-    <a onclick="openCity('전주시')">소식 올리기</a>
+    <a href="#cities">시·군</a>
+    <a href="#cities">문화소식</a>
   </nav>
-  <div class="right">🔍 검색</div>
 </header>
 
 <section class="hero">
-  <div class="hero-bg">
-    <div style="background-image:url('https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80')"></div>
-    <div style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80')"></div>
-  </div>
+  <div class="hero-inner">
+    <h1>
+      전북의 모든 <span>문화예술소식</span><br>
+      한곳에서 만나다
+    </h1>
+    <p>14개 시·군 문화정보를 보고 직접 올리는 시민 참여형 플랫폼</p>
 
-  <div class="hero-content">
-    <h1>전북 14개 시·군의<br><span>문화예술소식</span>을 한곳에!</h1>
-    <p>대표 이미지를 클릭하면 해당 시·군 문화예술소식을 보고 직접 올릴 수 있습니다.</p>
+    <div class="cta">
+      <button onclick="scrollCities()">시·군 보러가기</button>
+    </div>
   </div>
 </section>
 
 <main>
 
-<section class="panel" id="cities">
-  <div class="title-row">
-    <h2>전북 14개 시·군 문화예술소식 바로가기</h2>
-    <p>아래 대표 이미지를 클릭하세요. 중복 바로가기는 모두 정리했습니다.</p>
+<div class="section" id="cities">
+  <h2>14개 시·군 문화소식</h2>
+  <p>대표 이미지를 클릭하면 해당 지역 문화예술소식을 볼 수 있습니다.</p>
+
+  <div class="city-grid">
+
+    <div class="city-card" onclick="openCity('전주시')"><img src="https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=800&q=80"><h3>전주시</h3></div>
+    <div class="city-card" onclick="openCity('군산시')"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80"><h3>군산시</h3></div>
+    <div class="city-card" onclick="openCity('익산시')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80"><h3>익산시</h3></div>
+    <div class="city-card" onclick="openCity('정읍시')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=80"><h3>정읍시</h3></div>
+
+    <div class="city-card" onclick="openCity('남원시')"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"><h3>남원시</h3></div>
+    <div class="city-card" onclick="openCity('김제시')"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"><h3>김제시</h3></div>
+    <div class="city-card" onclick="openCity('완주군')"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80"><h3>완주군</h3></div>
+    <div class="city-card" onclick="openCity('진안군')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"><h3>진안군</h3></div>
+
+    <div class="city-card" onclick="openCity('무주군')"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=800&q=80"><h3>무주군</h3></div>
+    <div class="city-card" onclick="openCity('장수군')"><img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80"><h3>장수군</h3></div>
+    <div class="city-card" onclick="openCity('임실군')"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=800&q=80"><h3>임실군</h3></div>
+    <div class="city-card" onclick="openCity('순창군')"><img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80"><h3>순창군</h3></div>
+
+    <div class="city-card" onclick="openCity('고창군')"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80"><h3>고창군</h3></div>
+    <div class="city-card" onclick="openCity('부안군')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"><h3>부안군</h3></div>
+
   </div>
 
-  <div class="city-cards">
-    <div class="city-card" onclick="openCity('전주시')"><img src="https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=800&q=80"><span>한옥</span><h3>전주시</h3></div>
-    <div class="city-card" onclick="openCity('군산시')"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80"><span>근대</span><h3>군산시</h3></div>
-    <div class="city-card" onclick="openCity('익산시')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80"><span>백제</span><h3>익산시</h3></div>
-    <div class="city-card" onclick="openCity('정읍시')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=80"><span>내장산</span><h3>정읍시</h3></div>
-    <div class="city-card" onclick="openCity('남원시')"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"><span>춘향</span><h3>남원시</h3></div>
-    <div class="city-card" onclick="openCity('김제시')"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"><span>평야</span><h3>김제시</h3></div>
-    <div class="city-card" onclick="openCity('완주군')"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80"><span>예술</span><h3>완주군</h3></div>
-    <div class="city-card" onclick="openCity('진안군')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"><span>마이산</span><h3>진안군</h3></div>
-    <div class="city-card" onclick="openCity('무주군')"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=800&q=80"><span>산악</span><h3>무주군</h3></div>
-    <div class="city-card" onclick="openCity('장수군')"><img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80"><span>자연</span><h3>장수군</h3></div>
-    <div class="city-card" onclick="openCity('임실군')"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=800&q=80"><span>치즈</span><h3>임실군</h3></div>
-    <div class="city-card" onclick="openCity('순창군')"><img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80"><span>장류</span><h3>순창군</h3></div>
-    <div class="city-card" onclick="openCity('고창군')"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80"><span>유산</span><h3>고창군</h3></div>
-    <div class="city-card" onclick="openCity('부안군')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"><span>바다</span><h3>부안군</h3></div>
-  </div>
-</section>
+  <div class="detail" id="detail"></div>
 
-<section class="info-grid" id="info">
-  <div class="panel">
-    <h2>주요 문화예술소식</h2>
-    <div class="news-list">
-      <div>전북 주요 행사·축제 소식</div>
-      <div>지역 예술가 전시·공연 소식</div>
-      <div>문화유산 탐방 및 교육 프로그램</div>
-      <div>시민이 직접 올리는 문화예술소식</div>
-    </div>
-  </div>
-
-  <div class="panel promo">
-    <h2>문화로 하나되는 전북</h2>
-    <p>14개 시·군이 함께 만드는 문화예술소식 전문 플랫폼입니다.</p>
-    <button onclick="openCity('전주시')">소식 올리기</button>
-  </div>
-</section>
-
-<section class="panel detail" id="detail">
-  <button class="close" onclick="closeDetail()">닫기</button>
-  <h2 id="cityTitle">전주시 문화예술소식</h2>
-  <p id="citySub">지역의 행사·축제·전시·공연 소식을 확인하고 직접 올려보세요.</p>
-
-  <div class="detail-layout">
-    <div id="cityNews"></div>
-
-    <div class="upload">
-      <h3>문화예술소식 올리기</h3>
-      <select id="type">
-        <option>행사·축제</option>
-        <option>전시·공연</option>
-        <option>문화유산</option>
-        <option>교육·체험</option>
-      </select>
-      <input id="title" placeholder="소식 제목">
-      <input id="place" placeholder="장소">
-      <input id="date" placeholder="기간">
-      <textarea id="text" placeholder="내용"></textarea>
-      <button onclick="addPost()">등록하기</button>
-      <div id="posted"></div>
-    </div>
-  </div>
-</section>
+</div>
 
 </main>
 
 <footer>
-전북특별자치도 문화예술소식 · 14개 시·군 통합 플랫폼<br>
-© 2026 JB Culture News
+© 2026 전북 문화예술소식 플랫폼
 </footer>
 
 <script>
-let currentCity='전주시';
-
-const sample={
-'전주시':['전주 한옥마을 문화예술 프로그램','전주 지역 예술가 전시','전주 공연예술 주간'],
-'군산시':['군산 근대문화거리 행사','군산 시간여행 축제','군산 예술창작공간 전시'],
-'익산시':['익산 백제문화유산 탐방','익산 미술관 특별전','익산 시민문화공연'],
-'정읍시':['정읍 내장산 문화행사','정읍 지역작가 전시','정읍 문화유산 이야기'],
-'남원시':['남원 춘향문화 행사','남원 국악공연','남원 예술거리 프로그램'],
-'김제시':['김제 지평선 문화축제','김제 농경문화 체험','김제 지역예술 공연'],
-'완주군':['완주 예술마을 프로그램','완주 문화공간 전시','완주 시민참여 행사'],
-'진안군':['진안 마이산 문화행사','진안 산촌문화 체험','진안 지역예술 소식'],
-'무주군':['무주 산골문화예술제','무주 자연문화 체험','무주 공연예술 소식'],
-'장수군':['장수 자연문화 축제','장수 지역문화 탐방','장수 예술동아리 공연'],
-'임실군':['임실 치즈문화 축제','임실 문화예술 공연','임실 지역 전시'],
-'순창군':['순창 장류문화 체험','순창 전통문화 행사','순창 문화예술 공연'],
-'고창군':['고창 세계유산 문화행사','고창 판소리 문화소식','고창 역사문화 탐방'],
-'부안군':['부안 변산반도 문화여행','부안 해양문화 축제','부안 지역예술 전시']
-};
+function scrollCities(){
+  document.getElementById("cities").scrollIntoView({behavior:"smooth"});
+}
 
 function openCity(city){
- currentCity=city;
- document.getElementById('cityTitle').innerText=city+' 문화예술소식';
- document.getElementById('citySub').innerText=city+'의 행사·축제·전시·공연 소식을 보고 직접 올릴 수 있습니다.';
+  const detail = document.getElementById("detail");
 
- const box=document.getElementById('cityNews');
- box.innerHTML='';
- (sample[city]||[]).forEach(t=>{
-  box.innerHTML+=`<div class="item"><b>${t}</b><p>${city}에서 진행되는 문화예술소식입니다. 일정과 장소는 등록 후 업데이트됩니다.</p></div>`;
- });
+  detail.classList.add("active");
+  detail.innerHTML = `
+    <h3>${city} 문화예술소식</h3>
+    <div class="news-item">지역 행사 및 축제 정보</div>
+    <div class="news-item">전시 및 공연 소식</div>
 
- document.getElementById('detail').classList.add('active');
- document.getElementById('detail').scrollIntoView({behavior:'smooth'});
-}
-
-function closeDetail(){
- document.getElementById('detail').classList.remove('active');
-}
-
-function addPost(){
- const title=document.getElementById('title').value.trim();
- if(!title){
-  alert('소식 제목을 입력해주세요.');
-  return;
- }
-
- const type=document.getElementById('type').value;
- const place=document.getElementById('place').value;
- const date=document.getElementById('date').value;
- const text=document.getElementById('text').value;
-
- document.getElementById('posted').innerHTML=
- `<div class="item"><b>${currentCity} · ${type}</b><p><strong>${title}</strong></p><p>${date||'기간 미입력'} / ${place||'장소 미입력'}</p><p>${text||''}</p></div>`+
- document.getElementById('posted').innerHTML;
-
- document.getElementById('title').value='';
- document.getElementById('place').value='';
- document.getElementById('date').value='';
- document.getElementById('text').value='';
-
- alert('문화예술소식이 등록되었습니다.');
-}
-
-function scrollCities(){
- document.getElementById('cities').scrollIntoView({behavior:'smooth'});
-}
-
-function scrollInfo(){
- document.getElementById('info').scrollIntoView({behavior:'smooth'});
+    <div class="upload">
+      <input placeholder="소식 제목">
+      <input placeholder="장소">
+      <textarea placeholder="내용"></textarea>
+      <button>소식 등록</button>
+    </div>
+  `;
 }
 </script>
 
