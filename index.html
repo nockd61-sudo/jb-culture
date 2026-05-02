@@ -77,6 +77,9 @@ textarea{height:110px;resize:vertical}
 .share-btn{background:#6d4cff}
 .copy-btn{background:#111}
 .detail-meta{color:#666;font-weight:700;line-height:1.8}
+.comment-box{margin-top:25px;border-top:1px solid #eee;padding-top:18px}
+.comment-item{border:1px solid #ddd;border-radius:10px;padding:10px;margin-bottom:8px;background:#fafafa}
+.comment-item b{display:block;margin-bottom:4px}
 footer{text-align:center;padding:32px;color:#777}
 @media(max-width:900px){.city-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.topbar{align-items:flex-start;flex-direction:column}.hero-box{height:250px}.hero-text h1{font-size:32px}.city-grid{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}}
@@ -134,13 +137,40 @@ footer{text-align:center;padding:32px;color:#777}
   <h3 id="uploadTitle">문화소식 올리기</h3>
   <p id="uploadDesc">이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.</p>
   <div class="form-grid">
-    <div class="field"><label>분류</label><select id="postType"><option>행사·축제</option><option>전시·공연</option><option>문화유산</option><option>교육·체험</option></select></div>
-    <div class="field"><label>행사 제목</label><input id="postTitle" placeholder="예: 봄 문화예술제"></div>
-    <div class="field"><label>시작 날짜</label><input id="postStart" type="date"></div>
-    <div class="field"><label>종료 날짜</label><input id="postEnd" type="date"></div>
-    <div class="field"><label>장소</label><input id="postPlace" placeholder="예: 문화예술회관"></div>
-    <div class="field"><label>이미지</label><input id="postImage" type="file" accept="image/*" onchange="previewImage(event)"><div class="preview" id="imagePreview"></div></div>
-    <div class="field full"><label>설명</label><textarea id="postText" placeholder="행사 내용, 시간, 참여 방법 등을 입력하세요."></textarea></div>
+    <div class="field">
+      <label>분류</label>
+      <select id="postType">
+        <option>행사·축제</option>
+        <option>전시·공연</option>
+        <option>문화유산</option>
+        <option>교육·체험</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>행사 제목</label>
+      <input id="postTitle" placeholder="예: 봄 문화예술제">
+    </div>
+    <div class="field">
+      <label>시작 날짜</label>
+      <input id="postStart" type="date">
+    </div>
+    <div class="field">
+      <label>종료 날짜</label>
+      <input id="postEnd" type="date">
+    </div>
+    <div class="field">
+      <label>장소</label>
+      <input id="postPlace" placeholder="예: 문화예술회관">
+    </div>
+    <div class="field">
+      <label>이미지</label>
+      <input id="postImage" type="file" accept="image/*" onchange="previewImage(event)">
+      <div class="preview" id="imagePreview"></div>
+    </div>
+    <div class="field full">
+      <label>설명</label>
+      <textarea id="postText" placeholder="행사 내용, 시간, 참여 방법 등을 입력하세요."></textarea>
+    </div>
   </div>
   <button class="submit" onclick="addPost()">게시글 등록</button>
   <button class="reset" onclick="resetForm()">다시쓰기</button>
@@ -163,7 +193,9 @@ footer{text-align:center;padding:32px;color:#777}
   </div>
 </div>
 
-<footer><span id="footerText">전북문화예술소식 · 14개 시·군 통합 문화플랫폼</span></footer>
+<footer>
+  <span id="footerText">전북문화예술소식 · 14개 시·군 통합 문화플랫폼</span>
+</footer>
 
 <script>
 const cityData={
@@ -186,6 +218,7 @@ const cityData={
 let currentCity="전북";
 let uploadedImage="";
 let posts=[];
+let comments={};
 
 const sampleImages=[
 "https://images.unsplash.com/photo-1507878866276-a947ef722fee?auto=format&fit=crop&w=800&q=80",
@@ -197,20 +230,34 @@ function init(){
   Object.keys(cityData).forEach(city=>{
     grid.innerHTML+=`<button class="city-btn" onclick="openCity('${city}')" style="background-image:url('${cityData[city].img}')"><span>${city}</span></button>`;
   });
+
   Object.keys(cityData).forEach(city=>{
     posts.push(
       {id:makeId(),city,type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
       {id:makeId(),city,type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
     );
   });
+
   renderPosts();
 }
 
-function makeId(){return "post-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);}
+function makeId(){
+  return "post-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);
+}
 
 function goHome(){
   currentCity="전북";
-  setPage("전북문화예술소식","14개 시·군 문화소식 통합 플랫폼","전북문화예술소식","14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.","https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80","전북 가까운 날짜순 문화소식","문화소식 올리기","이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.","전북문화예술소식 · 14개 시·군 통합 문화플랫폼");
+  setPage(
+    "전북문화예술소식",
+    "14개 시·군 문화소식 통합 플랫폼",
+    "전북문화예술소식",
+    "14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.",
+    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80",
+    "전북 가까운 날짜순 문화소식",
+    "문화소식 올리기",
+    "이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.",
+    "전북문화예술소식 · 14개 시·군 통합 문화플랫폼"
+  );
   renderPosts();
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -218,10 +265,23 @@ function goHome(){
 function openCity(city){
   currentCity=city;
   const data=cityData[city];
-  setPage(`${city}문화소식`,`${city} 행사·전시·공연 시민참여 문화플랫폼`,`${city}문화소식`,`${data.desc} · 시민이 직접 올리고 함께 보는 문화소식`,data.img,`${city} 가까운 날짜순 문화소식`,`${city} 소식올리기`,`${city}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`,`${city}문화소식 · 시민참여 문화플랫폼`);
+
+  setPage(
+    `${city}문화소식`,
+    `${city} 행사·전시·공연 시민참여 문화플랫폼`,
+    `${city}문화소식`,
+    `${data.desc} · 시민이 직접 올리고 함께 보는 문화소식`,
+    data.img,
+    `${city} 가까운 날짜순 문화소식`,
+    `${city} 소식올리기`,
+    `${city}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`,
+    `${city}문화소식 · 시민참여 문화플랫폼`
+  );
+
   document.getElementById("searchTitle").innerText=`${city} 문화소식 검색`;
   document.getElementById("searchDesc").innerText=`${city}의 축제, 전시, 공연, 체험 등 문화행사를 검색합니다.`;
   document.getElementById("noticeTitle").innerText=`${city} 공지사항 미리보기`;
+
   renderPosts();
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -242,6 +302,7 @@ function renderPosts(){
   const grid=document.getElementById("eventGrid");
   let list=currentCity==="전북"?posts:posts.filter(p=>p.city===currentCity);
   list=list.sort((a,b)=>new Date(a.start)-new Date(b.start)).slice(0,8);
+
   grid.innerHTML=list.map(p=>`
     <div class="card">
       <div class="thumb" onclick="showDetail('${p.id}')">
@@ -252,7 +313,7 @@ function renderPosts(){
         <div class="date">${p.start} ~ ${p.end}</div>
         <div class="title">${p.title}</div>
         <div class="place">📍 ${p.place}</div>
-        <div class="stat-row">👁 ${p.views||0} · ❤️ ${p.likes||0}</div>
+        <div class="stat-row">👁 ${p.views||0} · ❤️ ${p.likes||0} · 💬 ${(comments[p.id]||[]).length}</div>
       </div>
       <div class="actions">
         <button onclick="showDetail('${p.id}')">자세히</button>
@@ -266,7 +327,13 @@ function renderPosts(){
 function previewImage(event){
   const file=event.target.files[0];
   const preview=document.getElementById("imagePreview");
-  if(!file){uploadedImage="";preview.innerHTML="";return;}
+
+  if(!file){
+    uploadedImage="";
+    preview.innerHTML="";
+    return;
+  }
+
   const reader=new FileReader();
   reader.onload=e=>{
     uploadedImage=e.target.result;
@@ -276,12 +343,22 @@ function previewImage(event){
 }
 
 function addPost(){
-  if(currentCity==="전북"){alert("먼저 전주시, 정읍시 등 시·군을 선택한 뒤 소식을 올려주세요.");return;}
+  if(currentCity==="전북"){
+    alert("먼저 전주시, 정읍시 등 시·군을 선택한 뒤 소식을 올려주세요.");
+    return;
+  }
+
   const title=document.getElementById("postTitle").value.trim();
-  if(!title){alert("행사 제목을 입력해주세요.");return;}
+
+  if(!title){
+    alert("행사 제목을 입력해주세요.");
+    return;
+  }
+
+  const id=makeId();
 
   posts.unshift({
-    id:makeId(),
+    id,
     city:currentCity,
     type:document.getElementById("postType").value,
     title,
@@ -293,6 +370,8 @@ function addPost(){
     likes:0,
     views:0
   });
+
+  comments[id]=[];
 
   resetForm();
   renderPosts();
@@ -314,34 +393,90 @@ function resetForm(){
 function showDetail(id){
   const p=posts.find(x=>x.id===id);
   if(!p)return;
+
   p.views=(p.views||0)+1;
+  if(!comments[id]) comments[id]=[];
+
   renderPosts();
 
   document.getElementById("modalTitle").innerText=p.title;
+
   document.getElementById("modalBody").innerHTML=`
     <img src="${p.image}">
+
     <div class="detail-meta">
       <p><b>지역:</b> ${p.city}</p>
       <p><b>분류:</b> ${p.type}</p>
       <p><b>기간:</b> ${p.start} ~ ${p.end}</p>
       <p><b>장소:</b> ${p.place}</p>
-      <p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0}</p>
+      <p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0} · <b>댓글:</b> ${(comments[p.id]||[]).length}</p>
     </div>
+
     <p style="line-height:1.7;white-space:pre-wrap">${p.text||"등록된 설명이 없습니다."}</p>
+
     <div class="detail-actions">
       <button class="like-btn" onclick="likePost('${p.id}'); showDetail('${p.id}')">❤️ 좋아요</button>
       <button class="share-btn" onclick="sharePost('${p.id}')">공유하기</button>
       <button class="copy-btn" onclick="copyPostText('${p.id}')">내용 복사</button>
     </div>
+
+    <div class="comment-box">
+      <h4 style="margin:0 0 10px;">댓글</h4>
+
+      <input id="commentName" placeholder="이름" style="margin-bottom:8px;">
+      <textarea id="commentText" placeholder="댓글을 입력하세요" style="height:90px;"></textarea>
+
+      <button class="submit" onclick="addComment('${p.id}')">댓글 등록</button>
+
+      <div id="commentList" style="margin-top:14px;">
+        ${renderComments(p.id)}
+      </div>
+    </div>
   `;
+
   document.getElementById("modalBg").classList.add("show");
 }
 
-function closeModal(){document.getElementById("modalBg").classList.remove("show");}
+function renderComments(id){
+  if(!comments[id] || comments[id].length===0){
+    return `<p style="color:#777;">댓글이 없습니다.</p>`;
+  }
+
+  return comments[id].map(c=>`
+    <div class="comment-item">
+      <b>${escapeHtml(c.name)}</b>
+      <p style="margin:6px 0 0;white-space:pre-wrap;">${escapeHtml(c.text)}</p>
+    </div>
+  `).join("");
+}
+
+function addComment(id){
+  const name=document.getElementById("commentName").value.trim();
+  const text=document.getElementById("commentText").value.trim();
+
+  if(!name || !text){
+    alert("이름과 댓글을 입력해주세요.");
+    return;
+  }
+
+  if(!comments[id]) comments[id]=[];
+  comments[id].unshift({name,text});
+
+  document.getElementById("commentName").value="";
+  document.getElementById("commentText").value="";
+  document.getElementById("commentList").innerHTML=renderComments(id);
+
+  renderPosts();
+}
+
+function closeModal(){
+  document.getElementById("modalBg").classList.remove("show");
+}
 
 function likePost(id){
   const p=posts.find(x=>x.id===id);
   if(!p)return;
+
   p.likes=(p.likes||0)+1;
   renderPosts();
 }
@@ -349,30 +484,73 @@ function likePost(id){
 function sharePost(id){
   const p=posts.find(x=>x.id===id);
   if(!p)return;
-  const text=`${p.title}\n${p.city} 문화소식\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}`;
+
+  const text=`${p.title}
+${p.city} 문화소식
+기간: ${p.start} ~ ${p.end}
+장소: ${p.place}`;
+
   if(navigator.share){
-    navigator.share({title:p.title,text,url:location.href}).catch(()=>{});
+    navigator.share({
+      title:p.title,
+      text,
+      url:location.href
+    }).catch(()=>{});
   }else{
-    navigator.clipboard.writeText(text).then(()=>alert("공유 내용이 복사되었습니다."));
+    navigator.clipboard.writeText(text).then(()=>{
+      alert("공유 내용이 복사되었습니다.");
+    });
   }
 }
 
 function copyPostText(id){
   const p=posts.find(x=>x.id===id);
   if(!p)return;
-  const text=`${p.title}\n지역: ${p.city}\n분류: ${p.type}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n\n${p.text}`;
-  navigator.clipboard.writeText(text).then(()=>alert("내용이 복사되었습니다."));
+
+  const text=`${p.title}
+지역: ${p.city}
+분류: ${p.type}
+기간: ${p.start} ~ ${p.end}
+장소: ${p.place}
+
+${p.text}`;
+
+  navigator.clipboard.writeText(text).then(()=>{
+    alert("내용이 복사되었습니다.");
+  });
 }
 
 function searchGoogle(){
   const q=document.getElementById("searchInput").value.trim();
   const region=currentCity==="전북"?"전북":currentCity;
-  if(!q){alert("검색어를 입력해주세요.");return;}
-  window.open("https://www.google.com/search?q="+encodeURIComponent(region+" "+q+" 문화 행사 전시 공연 축제"),"_blank");
+
+  if(!q){
+    alert("검색어를 입력해주세요.");
+    return;
+  }
+
+  window.open(
+    "https://www.google.com/search?q="+encodeURIComponent(region+" "+q+" 문화 행사 전시 공연 축제"),
+    "_blank"
+  );
 }
 
-function scrollBoard(){document.getElementById("board").scrollIntoView({behavior:"smooth"});}
-function scrollUpload(){document.getElementById("upload").scrollIntoView({behavior:"smooth"});}
+function scrollBoard(){
+  document.getElementById("board").scrollIntoView({behavior:"smooth"});
+}
+
+function scrollUpload(){
+  document.getElementById("upload").scrollIntoView({behavior:"smooth"});
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
 init();
 </script>
