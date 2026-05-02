@@ -1,557 +1,554 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>전북문화소식 | 14개 시·군 통합 문화플랫폼</title>
-  <meta name="description" content="전북특별자치도 14개 시·군의 문화소식, 행사, 축제, 전시, 공연, 여행, 문화유산 정보를 한곳에서 보는 통합 문화플랫폼입니다." />
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Noto Sans KR", Arial, sans-serif;
-      color: #111;
-      background: #eef7f8;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,0.96);
-      border-bottom: 1px solid #e5e7eb;
-      backdrop-filter: blur(10px);
-    }
-
-    .topbar {
-      max-width: 1500px;
-      margin: auto;
-      height: 84px;
-      padding: 0 34px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 950;
-      font-size: 28px;
-      line-height: 1.1;
-    }
-
-    .logo-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg,#ef4444,#facc15,#22c55e,#2563eb);
-      transform: rotate(-12deg);
-    }
-
-    .logo small {
-      display: block;
-      font-size: 13px;
-      font-weight: 800;
-      color: #222;
-    }
-
-    .logo-badge {
-      background: #1d70d6;
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 900;
-      margin-left: 3px;
-    }
-
-    nav {
-      display: flex;
-      gap: 44px;
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    nav a {
-      color: #111;
-      text-decoration: none;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      font-weight: 900;
-    }
-
-    .top-actions button {
-      background: none;
-      border: 0;
-      font-size: 17px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .hero {
-      position: relative;
-      min-height: 910px;
-      overflow: hidden;
-      background:
-        linear-gradient(to bottom, rgba(255,255,255,.25), rgba(238,247,248,.94)),
-        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80");
-      background-size: cover;
-      background-position: center;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.7), transparent 32%),
-        radial-gradient(circle at 80% 32%, rgba(255,255,255,.65), transparent 35%),
-        linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.15));
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      max-width: 1500px;
-      margin: auto;
-      padding: 55px 34px 40px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(38px, 5vw, 70px);
-      line-height: 1.18;
-      letter-spacing: -3px;
-      font-weight: 950;
-    }
-
-    .hero h1 strong {
-      color: #6345d8;
-      font-size: 1.12em;
-    }
-
-    .hero p {
-      margin: 16px 0 28px;
-      color: #444;
-      font-size: 22px;
-      font-weight: 600;
-    }
-
-    .visual-stage {
-      position: relative;
-      min-height: 410px;
-      margin-top: 18px;
-    }
-
-    .place {
-      position: absolute;
-      background: rgba(255,255,255,.72);
-      border-radius: 22px;
-      padding: 8px 13px;
-      font-weight: 900;
-      color: #374151;
-      box-shadow: 0 8px 20px rgba(0,0,0,.08);
-      font-size: 15px;
-    }
-
-    .p1 { left: 10%; top: 14%; }
-    .p2 { left: 24%; top: 38%; }
-    .p3 { right: 18%; top: 10%; }
-    .p4 { right: 8%; top: 30%; }
-    .p5 { left: 4%; bottom: 20%; }
-    .p6 { right: 10%; bottom: 20%; }
-
-    .map-card {
-      width: min(560px, 92%);
-      margin: 0 auto;
-      padding: 25px;
-      border-radius: 34px;
-      background: rgba(255,255,255,.62);
-      box-shadow: 0 22px 50px rgba(0,0,0,.13);
-      backdrop-filter: blur(8px);
-    }
-
-    .map-title {
-      font-size: 18px;
-      font-weight: 950;
-      margin-bottom: 15px;
-      color: #2563eb;
-    }
-
-    .map-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .city {
-      border: 0;
-      border-radius: 18px;
-      padding: 14px 7px;
-      font-weight: 950;
-      color: #fff;
-      box-shadow: inset 0 -3px 0 rgba(0,0,0,.08);
-      cursor: pointer;
-    }
-
-    .city:nth-child(1) { background:#7cc36b; }
-    .city:nth-child(2) { background:#69b8e8; }
-    .city:nth-child(3) { background:#94d3a2; }
-    .city:nth-child(4) { background:#66b7de; }
-    .city:nth-child(5) { background:#e8a9d4; }
-    .city:nth-child(6) { background:#9fc2e8; }
-    .city:nth-child(7) { background:#9dd5b8; }
-    .city:nth-child(8) { background:#91c6ef; }
-    .city:nth-child(9) { background:#f7b37d; }
-    .city:nth-child(10) { background:#a98ee8; }
-    .city:nth-child(11) { background:#f28f77; }
-    .city:nth-child(12) { background:#c79bea; }
-    .city:nth-child(13) { background:#90d2dd; }
-    .city:nth-child(14) { background:#8db6d9; }
-
-    .quick-menu {
-      max-width: 880px;
-      margin: 18px auto 0;
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 18px;
-    }
-
-    .quick {
-      background: rgba(255,255,255,.93);
-      border: 1px solid rgba(255,255,255,.8);
-      border-radius: 24px;
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.12);
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    .quick span {
-      font-size: 30px;
-    }
-
-    .content {
-      position: relative;
-      max-width: 1500px;
-      margin: -40px auto 0;
-      padding: 0 34px 70px;
-      display: grid;
-      grid-template-columns: 1.3fr .7fr .55fr;
-      gap: 28px;
-      z-index: 5;
-    }
-
-    .panel {
-      background: rgba(255,255,255,.94);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: 0 16px 42px rgba(0,0,0,.10);
-    }
-
-    .panel-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .panel h2 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 950;
-    }
-
-    .more {
-      border: 0;
-      background: transparent;
-      font-size: 15px;
-      font-weight: 900;
-      color: #666;
-      cursor: pointer;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .card {
-      cursor: pointer;
-    }
-
-    .card img {
-      width: 100%;
-      height: 105px;
-      object-fit: cover;
-      border-radius: 14px;
-      display: block;
-    }
-
-    .label {
-      display: inline-block;
-      margin-top: 9px;
-      padding: 4px 8px;
-      border-radius: 14px;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 950;
-      background: #2563eb;
-    }
-
-    .label.red { background: #ef4444; }
-    .label.green { background: #16a34a; }
-    .label.purple { background: #7c3aed; }
-
-    .card h3 {
-      margin: 7px 0 5px;
-      font-size: 15px;
-      line-height: 1.35;
-    }
-
-    .card p {
-      margin: 4px 0;
-      color: #777;
-      font-size: 13px;
-    }
-
-    .city-buttons {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .city-buttons button {
-      border: 0;
-      border-radius: 16px;
-      background: #f2f5f9;
-      padding: 13px 5px;
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    .promo {
-      background: linear-gradient(135deg, #b8f0e7, #dff8ef);
-      border-radius: 28px;
-      padding: 34px 28px;
-      min-height: 238px;
-      box-shadow: 0 16px 42px rgba(0,0,0,.10);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .promo h2 {
-      margin: 0 0 16px;
-      font-size: 25px;
-      font-weight: 950;
-    }
-
-    .promo p {
-      font-size: 18px;
-      line-height: 1.55;
-      font-weight: 800;
-    }
-
-    .promo button {
-      margin-top: 10px;
-      background: #04534b;
-      color: #fff;
-      border: 0;
-      border-radius: 22px;
-      padding: 11px 22px;
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    .search-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      z-index: 3000;
-      padding: 30px 16px;
-    }
-
-    .search-box {
-      max-width: 580px;
-      margin: 120px auto;
-      background: white;
-      border-radius: 28px;
-      padding: 26px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 16px 18px;
-      border-radius: 18px;
-      border: 1px solid #ddd;
-      font-size: 18px;
-      margin-bottom: 12px;
-    }
-
-    .btn {
-      border: 0;
-      background: #2563eb;
-      color: #fff;
-      padding: 12px 22px;
-      border-radius: 20px;
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    .detail-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.68);
-      z-index: 3000;
-      padding: 30px 16px;
-      overflow-y: auto;
-    }
-
-    .detail {
-      max-width: 760px;
-      margin: auto;
-      background: #fff;
-      border-radius: 28px;
-      padding: 28px;
-      position: relative;
-    }
-
-    .detail img {
-      width: 100%;
-      max-height: 440px;
-      object-fit: contain;
-      background: #f3f4f6;
-      border-radius: 18px;
-    }
-
-    .close {
-      position: absolute;
-      top: 16px;
-      right: 22px;
-      font-size: 32px;
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    footer {
-      text-align: center;
-      padding: 36px 18px;
-      background: #0f172a;
-      color: #d1d5db;
-      font-size: 14px;
-    }
-
-    @media (max-width: 1100px) {
-      nav { display: none; }
-      .content {
-        grid-template-columns: 1fr;
-        margin-top: 20px;
-      }
-      .news-grid { grid-template-columns: repeat(2, 1fr); }
-      .quick-menu { grid-template-columns: repeat(4, 1fr); }
-    }
-
-    @media (max-width: 650px) {
-      .topbar {
-        height: auto;
-        padding: 14px 18px;
-      }
-
-      .logo {
-        font-size: 22px;
-      }
-
-      .top-actions {
-        gap: 10px;
-      }
-
-      .hero {
-        min-height: auto;
-      }
-
-      .hero-inner {
-        padding: 36px 18px;
-      }
-
-      .hero h1 {
-        font-size: 34px;
-        letter-spacing: -1.5px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .visual-stage {
-        min-height: auto;
-      }
-
-      .place {
-        display: none;
-      }
-
-      .map-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .quick-menu {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .quick {
-        height: 88px;
-      }
-
-      .content {
-        padding: 0 18px 50px;
-      }
-
-      .news-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card img {
-        height: 190px;
-      }
-
-      .city-buttons {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>전북문화소식 | 14개 시·군 통합 문화플랫폼</title>
+<meta name="description" content="전북특별자치도 14개 시·군의 문화소식, 행사, 축제, 전시, 공연, 여행, 문화유산 정보를 한곳에서 보는 통합 문화플랫폼입니다.">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", Arial, sans-serif;
+  color: #111;
+  background: #eaf7f4;
+}
+
+header {
+  height: 86px;
+  background: rgba(255,255,255,0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1500px;
+  padding: 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 950;
+}
+
+.logo-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: conic-gradient(#e43d30, #f5c400, #12a150, #1d75d8, #e43d30);
+  transform: rotate(-14deg);
+}
+
+.logo-text small {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.logo-text div {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.badge {
+  background: #146fd1;
+  color: white;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+nav {
+  display: flex;
+  gap: 46px;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+nav a {
+  text-decoration: none;
+  color: #111;
+}
+
+.header-actions {
+  display: flex;
+  gap: 26px;
+  font-weight: 900;
+}
+
+.header-actions button {
+  border: none;
+  background: none;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.hero {
+  position: relative;
+  min-height: 820px;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.15), rgba(235,248,246,.92)),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=80");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.75), transparent 30%),
+    radial-gradient(circle at 78% 28%, rgba(255,255,255,.70), transparent 34%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.55), transparent 42%);
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 1500px;
+  margin: auto;
+  padding: 48px 34px 30px;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1.2;
+  letter-spacing: -3px;
+  font-weight: 950;
+}
+
+.hero h1 strong {
+  color: #6146d8;
+  font-size: 1.1em;
+}
+
+.hero-sub {
+  margin-top: 14px;
+  font-size: 21px;
+  color: #444;
+  font-weight: 600;
+}
+
+.city-label {
+  position: absolute;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.65);
+  font-weight: 900;
+  color: #4b5563;
+  box-shadow: 0 5px 18px rgba(0,0,0,.07);
+}
+
+.l1 { left: 14%; top: 170px; }
+.l2 { left: 27%; top: 260px; }
+.l3 { right: 21%; top: 155px; }
+.l4 { right: 9%; top: 250px; }
+.l5 { left: 5%; top: 410px; }
+.l6 { right: 12%; top: 445px; }
+
+.map-box {
+  max-width: 520px;
+  margin: 38px auto 0;
+  padding: 24px;
+  border-radius: 34px;
+  background: rgba(255,255,255,.58);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 18px 48px rgba(0,0,0,.12);
+}
+
+.map-title {
+  font-size: 18px;
+  font-weight: 950;
+  color: #2563eb;
+  margin-bottom: 14px;
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.city {
+  border: none;
+  border-radius: 18px;
+  padding: 13px 6px;
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.city:nth-child(1) { background: #83c970; }
+.city:nth-child(2) { background: #69b8e8; }
+.city:nth-child(3) { background: #98d8a8; }
+.city:nth-child(4) { background: #77c1e8; }
+.city:nth-child(5) { background: #e7a5d5; }
+.city:nth-child(6) { background: #8bbce8; }
+.city:nth-child(7) { background: #a8d6b9; }
+.city:nth-child(8) { background: #86c5ec; }
+.city:nth-child(9) { background: #f6b37c; }
+.city:nth-child(10) { background: #a991e6; }
+.city:nth-child(11) { background: #f08a74; }
+.city:nth-child(12) { background: #c49be8; }
+.city:nth-child(13) { background: #92d3dc; }
+.city:nth-child(14) { background: #8fb9d9; }
+
+.quick-menu {
+  max-width: 860px;
+  margin: 34px auto 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 18px;
+}
+
+.quick {
+  height: 96px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.quick span {
+  font-size: 30px;
+}
+
+.content {
+  max-width: 1500px;
+  margin: -70px auto 0;
+  padding: 0 34px 70px;
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1.35fr .75fr .58fr;
+  gap: 28px;
+}
+
+.panel {
+  background: rgba(255,255,255,.95);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 16px 42px rgba(0,0,0,.10);
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.more {
+  border: none;
+  background: none;
+  color: #666;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card img {
+  width: 100%;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.label {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 4px 8px;
+  border-radius: 14px;
+  color: white;
+  font-size: 12px;
+  font-weight: 950;
+  background: #2563eb;
+}
+
+.red { background: #ef4444; }
+.green { background: #16a34a; }
+.purple { background: #7c3aed; }
+
+.card h3 {
+  font-size: 15px;
+  margin: 7px 0 6px;
+  line-height: 1.35;
+}
+
+.card p {
+  margin: 4px 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.city-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.city-buttons button {
+  border: none;
+  border-radius: 16px;
+  background: #f2f5f9;
+  padding: 13px 4px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.promo {
+  background: linear-gradient(135deg, #b5eee5, #def8ee);
+  border-radius: 28px;
+  padding: 34px 28px;
+  box-shadow: 0 16px 42px rgba(0,0,0,.10);
+  min-height: 244px;
+}
+
+.promo h2 {
+  margin: 0 0 15px;
+  font-size: 25px;
+  font-weight: 950;
+}
+
+.promo p {
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 800;
+}
+
+.promo button {
+  margin-top: 12px;
+  border: none;
+  background: #064e45;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.bottom-wave {
+  height: 95px;
+  background:
+    linear-gradient(160deg, transparent 45%, #75c993 46%),
+    linear-gradient(12deg, #53b6c9 0%, #a6e0dd 45%, transparent 46%);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.68);
+  z-index: 3000;
+  padding: 30px 16px;
+  overflow-y: auto;
+}
+
+.modal-box {
+  max-width: 760px;
+  margin: auto;
+  background: white;
+  border-radius: 28px;
+  padding: 28px;
+  position: relative;
+}
+
+.modal-box img {
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  background: #f3f4f6;
+  border-radius: 18px;
+}
+
+.close {
+  position: absolute;
+  right: 22px;
+  top: 16px;
+  font-size: 32px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.search-box {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 3000;
+  padding: 30px 16px;
+}
+
+.search-inner {
+  max-width: 580px;
+  margin: 120px auto;
+  background: white;
+  padding: 28px;
+  border-radius: 28px;
+}
+
+.search-inner input {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 18px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.btn {
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 20px;
+  padding: 12px 22px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+footer {
+  background: #0f172a;
+  color: #d1d5db;
+  text-align: center;
+  padding: 34px 18px;
+  font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+  nav { display: none; }
+
+  .content {
+    grid-template-columns: 1fr;
+    margin-top: 20px;
+  }
+
+  .quick-menu {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  header {
+    height: auto;
+  }
+
+  .header-inner {
+    padding: 14px 18px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-text div {
+    font-size: 24px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hero-inner {
+    padding: 34px 18px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+  }
+
+  .city-label {
+    display: none;
+  }
+
+  .map-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content {
+    padding: 0 18px 50px;
+  }
+
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card img {
+    height: 190px;
+  }
+
+  .city-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="topbar">
+  <div class="header-inner">
     <div class="logo">
       <div class="logo-mark"></div>
-      <div>
+      <div class="logo-text">
         <small>전북특별자치도</small>
-        문화소식
+        <div>문화소식 <span class="badge">14개 시·군 통합</span></div>
       </div>
-      <span class="logo-badge">14개 시·군 통합</span>
     </div>
 
     <nav>
@@ -563,7 +560,7 @@
       <a href="#community">커뮤니티</a>
     </nav>
 
-    <div class="top-actions">
+    <div class="header-actions">
       <button onclick="openSearch()">🔍 검색</button>
       <button onclick="alert('전체메뉴는 다음 단계에서 연결하면 됩니다.')">☰ 전체메뉴</button>
     </div>
@@ -573,34 +570,32 @@
 <section class="hero">
   <div class="hero-inner">
     <h1>전북 14개 시·군의<br><strong>모든 문화소식</strong>을 한곳에!</h1>
-    <p>함께 나누고, 함께 누리는 전북의 문화 이야기</p>
+    <div class="hero-sub">함께 나누고, 함께 누리는 전북의 문화 이야기</div>
 
-    <div class="visual-stage">
-      <div class="place p1">군산</div>
-      <div class="place p2">전주</div>
-      <div class="place p3">익산</div>
-      <div class="place p4">무주</div>
-      <div class="place p5">고창</div>
-      <div class="place p6">정읍</div>
+    <div class="city-label l1">군산</div>
+    <div class="city-label l2">전주</div>
+    <div class="city-label l3">익산</div>
+    <div class="city-label l4">무주</div>
+    <div class="city-label l5">고창</div>
+    <div class="city-label l6">정읍</div>
 
-      <div class="map-card">
-        <div class="map-title">전북 14개 시·군 바로보기</div>
-        <div class="map-grid">
-          <button class="city" onclick="filterCity('전주시')">전주시</button>
-          <button class="city" onclick="filterCity('군산시')">군산시</button>
-          <button class="city" onclick="filterCity('익산시')">익산시</button>
-          <button class="city" onclick="filterCity('정읍시')">정읍시</button>
-          <button class="city" onclick="filterCity('남원시')">남원시</button>
-          <button class="city" onclick="filterCity('김제시')">김제시</button>
-          <button class="city" onclick="filterCity('완주군')">완주군</button>
-          <button class="city" onclick="filterCity('진안군')">진안군</button>
-          <button class="city" onclick="filterCity('무주군')">무주군</button>
-          <button class="city" onclick="filterCity('장수군')">장수군</button>
-          <button class="city" onclick="filterCity('임실군')">임실군</button>
-          <button class="city" onclick="filterCity('순창군')">순창군</button>
-          <button class="city" onclick="filterCity('고창군')">고창군</button>
-          <button class="city" onclick="filterCity('부안군')">부안군</button>
-        </div>
+    <div class="map-box">
+      <div class="map-title">전북 14개 시·군 바로보기</div>
+      <div class="map-grid">
+        <button class="city" onclick="filterCity('전주시')">전주시</button>
+        <button class="city" onclick="filterCity('군산시')">군산시</button>
+        <button class="city" onclick="filterCity('익산시')">익산시</button>
+        <button class="city" onclick="filterCity('정읍시')">정읍시</button>
+        <button class="city" onclick="filterCity('남원시')">남원시</button>
+        <button class="city" onclick="filterCity('김제시')">김제시</button>
+        <button class="city" onclick="filterCity('완주군')">완주군</button>
+        <button class="city" onclick="filterCity('진안군')">진안군</button>
+        <button class="city" onclick="filterCity('무주군')">무주군</button>
+        <button class="city" onclick="filterCity('장수군')">장수군</button>
+        <button class="city" onclick="filterCity('임실군')">임실군</button>
+        <button class="city" onclick="filterCity('순창군')">순창군</button>
+        <button class="city" onclick="filterCity('고창군')">고창군</button>
+        <button class="city" onclick="filterCity('부안군')">부안군</button>
       </div>
     </div>
 
@@ -651,21 +646,23 @@
   <section class="promo">
     <h2>문화로 하나되는 전북</h2>
     <p>14개 시·군이 함께 만드는 문화의 힘!</p>
-    <button onclick="alert('다음 단계에서 소개 페이지를 연결하면 됩니다.')">자세히 보기</button>
+    <button onclick="alert('전북문화소식 소개 페이지는 다음 단계에서 연결하면 됩니다.')">자세히 보기</button>
   </section>
 </main>
 
-<div class="search-modal" id="searchModal">
-  <div class="search-box">
+<div class="bottom-wave"></div>
+
+<div class="search-box" id="searchBox">
+  <div class="search-inner">
     <h2>전북 문화소식 검색</h2>
-    <input id="searchInput" placeholder="예: 전주 축제, 정읍 전시, 군산 공연" />
+    <input id="searchInput" placeholder="예: 전주 축제, 군산 공연, 정읍 전시" />
     <button class="btn" onclick="searchGoogle()">구글에서 검색</button>
     <button class="btn" style="background:#555" onclick="closeSearch()">닫기</button>
   </div>
 </div>
 
-<div class="detail-modal" id="detailModal">
-  <div class="detail">
+<div class="modal" id="detailModal">
+  <div class="modal-box">
     <span class="close" onclick="closeDetail()">×</span>
     <img id="detailImg" src="" alt="">
     <h2 id="detailTitle"></h2>
@@ -681,160 +678,157 @@
 </footer>
 
 <script>
-  const posts = [
-    {
-      title: "전주세계소리축제",
-      city: "전주시",
-      type: "행사",
-      date: "2026.05.10 ~ 05.16",
-      place: "전주한옥마을 일원",
-      img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80",
-      desc: "전통과 현대의 소리가 만나는 전북 대표 문화축제입니다."
-    },
-    {
-      title: "익산 보석박물관 특별전",
-      city: "익산시",
-      type: "전시",
-      date: "2026.05.12 ~ 06.30",
-      place: "익산보석박물관",
-      img: "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80",
-      desc: "보석과 예술을 결합한 특별기획 전시입니다."
-    },
-    {
-      title: "정읍 구절초 축제",
-      city: "정읍시",
-      type: "행사",
-      date: "2026.05.15 ~ 05.25",
-      place: "정읍 구절초지방정원",
-      img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
-      desc: "자연과 꽃, 지역문화가 함께 어우러지는 축제입니다."
-    },
-    {
-      title: "군산 시간여행축제",
-      city: "군산시",
-      type: "문화유산",
-      date: "2026.05.18 ~ 05.22",
-      place: "군산 근대역사거리",
-      img: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80",
-      desc: "근대문화유산을 배경으로 열리는 거리형 문화행사입니다."
-    }
-  ];
+const posts = [
+  {
+    title: "전주세계소리축제",
+    city: "전주시",
+    type: "행사",
+    date: "2026.05.10 ~ 05.16",
+    place: "전주한옥마을 일원",
+    img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80",
+    desc: "전통과 현대의 소리가 만나는 전북 대표 문화축제입니다."
+  },
+  {
+    title: "익산 보석박물관 특별전",
+    city: "익산시",
+    type: "전시",
+    date: "2026.05.12 ~ 06.30",
+    place: "익산보석박물관",
+    img: "https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=900&q=80",
+    desc: "보석과 예술을 결합한 특별기획 전시입니다."
+  },
+  {
+    title: "정읍 구절초 축제",
+    city: "정읍시",
+    type: "행사",
+    date: "2026.05.15 ~ 05.25",
+    place: "정읍 구절초지방정원",
+    img: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80",
+    desc: "자연과 꽃, 지역문화가 함께 어우러지는 정읍 문화축제입니다."
+  },
+  {
+    title: "군산 시간여행축제",
+    city: "군산시",
+    type: "문화유산",
+    date: "2026.05.18 ~ 05.22",
+    place: "군산 근대역사거리",
+    img: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80",
+    desc: "근대문화유산을 배경으로 열리는 거리형 문화행사입니다."
+  }
+];
 
-  let currentPost = null;
+let currentPost = null;
 
-  function renderPosts(list) {
-    const grid = document.getElementById("newsGrid");
-    grid.innerHTML = "";
+function renderPosts(list) {
+  const grid = document.getElementById("newsGrid");
+  grid.innerHTML = "";
 
-    if (list.length === 0) {
-      grid.innerHTML = "<p>해당 소식이 없습니다.</p>";
-      return;
-    }
-
-    list.forEach((post, index) => {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.onclick = () => openDetail(post);
-
-      let labelClass = "";
-      if (post.type === "전시") labelClass = "red";
-      if (post.type === "행사") labelClass = "green";
-      if (post.type === "문화유산") labelClass = "purple";
-
-      div.innerHTML = `
-        <img src="${post.img}" alt="${post.title}">
-        <span class="label ${labelClass}">${post.type}</span>
-        <h3>${post.title}</h3>
-        <p>📅 ${post.date}</p>
-        <p>📍 ${post.place}</p>
-      `;
-      grid.appendChild(div);
-    });
+  if (list.length === 0) {
+    grid.innerHTML = "<p>해당 소식이 없습니다.</p>";
+    return;
   }
 
-  function filterCity(city) {
-    const filtered = posts.filter(p => p.city === city);
-    renderPosts(filtered);
-    scrollNews();
-  }
+  list.forEach(post => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.onclick = () => openDetail(post);
 
-  function filterType(type) {
-    if (type === "전체") {
-      renderPosts(posts);
-    } else {
-      renderPosts(posts.filter(p => p.type === type));
-    }
-    scrollNews();
-  }
+    let labelClass = "";
+    if (post.type === "전시") labelClass = "red";
+    if (post.type === "행사") labelClass = "green";
+    if (post.type === "문화유산") labelClass = "purple";
 
-  function resetPosts() {
+    div.innerHTML = `
+      <img src="${post.img}" alt="${post.title}">
+      <span class="label ${labelClass}">${post.type}</span>
+      <h3>${post.title}</h3>
+      <p>📅 ${post.date}</p>
+      <p>📍 ${post.place}</p>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function filterCity(city) {
+  renderPosts(posts.filter(p => p.city === city));
+  scrollNews();
+}
+
+function filterType(type) {
+  if (type === "전체") {
     renderPosts(posts);
-    scrollNews();
+  } else {
+    renderPosts(posts.filter(p => p.type === type));
   }
+  scrollNews();
+}
 
-  function showCities() {
-    document.getElementById("cities").scrollIntoView({ behavior: "smooth" });
-  }
-
-  function scrollNews() {
-    document.getElementById("news").scrollIntoView({ behavior: "smooth" });
-  }
-
-  function openSearch() {
-    document.getElementById("searchModal").style.display = "block";
-  }
-
-  function closeSearch() {
-    document.getElementById("searchModal").style.display = "none";
-  }
-
-  function searchGoogle() {
-    const q = document.getElementById("searchInput").value.trim();
-
-    if (!q) {
-      alert("검색어를 입력해주세요.");
-      return;
-    }
-
-    const query = encodeURIComponent(q + " 전북 행사 축제 전시 공연 문화소식");
-    window.open("https://www.google.com/search?q=" + query, "_blank");
-  }
-
-  function openDetail(post) {
-    currentPost = post;
-    document.getElementById("detailImg").src = post.img;
-    document.getElementById("detailTitle").innerText = post.title;
-    document.getElementById("detailMeta").innerText = `${post.city} · ${post.place} · ${post.date}`;
-    document.getElementById("detailDesc").innerText = post.desc;
-    document.getElementById("detailModal").style.display = "block";
-  }
-
-  function closeDetail() {
-    document.getElementById("detailModal").style.display = "none";
-  }
-
-  function sharePost() {
-    const url = window.location.href;
-    const title = currentPost ? currentPost.title : "전북문화소식";
-
-    if (navigator.share) {
-      navigator.share({
-        title: title,
-        text: "전북문화소식에서 확인해보세요.",
-        url: url
-      });
-    } else {
-      navigator.clipboard.writeText(url);
-      alert("주소가 복사되었습니다.");
-    }
-  }
-
-  window.onclick = function(e) {
-    if (e.target === document.getElementById("searchModal")) closeSearch();
-    if (e.target === document.getElementById("detailModal")) closeDetail();
-  };
-
+function resetPosts() {
   renderPosts(posts);
+  scrollNews();
+}
+
+function showCities() {
+  document.getElementById("cities").scrollIntoView({ behavior: "smooth" });
+}
+
+function scrollNews() {
+  document.getElementById("news").scrollIntoView({ behavior: "smooth" });
+}
+
+function openSearch() {
+  document.getElementById("searchBox").style.display = "block";
+}
+
+function closeSearch() {
+  document.getElementById("searchBox").style.display = "none";
+}
+
+function searchGoogle() {
+  const q = document.getElementById("searchInput").value.trim();
+  if (!q) {
+    alert("검색어를 입력해주세요.");
+    return;
+  }
+  const query = encodeURIComponent(q + " 전북 행사 축제 전시 공연 문화소식");
+  window.open("https://www.google.com/search?q=" + query, "_blank");
+}
+
+function openDetail(post) {
+  currentPost = post;
+  document.getElementById("detailImg").src = post.img;
+  document.getElementById("detailTitle").innerText = post.title;
+  document.getElementById("detailMeta").innerText = `${post.city} · ${post.place} · ${post.date}`;
+  document.getElementById("detailDesc").innerText = post.desc;
+  document.getElementById("detailModal").style.display = "block";
+}
+
+function closeDetail() {
+  document.getElementById("detailModal").style.display = "none";
+}
+
+function sharePost() {
+  const url = window.location.href;
+  const title = currentPost ? currentPost.title : "전북문화소식";
+
+  if (navigator.share) {
+    navigator.share({
+      title,
+      text: "전북문화소식에서 확인해보세요.",
+      url
+    });
+  } else {
+    navigator.clipboard.writeText(url);
+    alert("주소가 복사되었습니다.");
+  }
+}
+
+window.onclick = function(e) {
+  if (e.target === document.getElementById("searchBox")) closeSearch();
+  if (e.target === document.getElementById("detailModal")) closeDetail();
+};
+
+renderPosts(posts);
 </script>
 
 </body>
