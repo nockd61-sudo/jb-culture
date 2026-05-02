@@ -14,6 +14,7 @@ body{
   color:#111;
 }
 a{text-decoration:none;color:inherit}
+button{font-family:inherit}
 
 header{
   height:74px;
@@ -24,7 +25,7 @@ header{
   padding:0 7%;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
   box-shadow:0 2px 12px rgba(0,0,0,.08);
 }
 .logo{
@@ -38,15 +39,18 @@ header{
 }
 nav{
   display:flex;
-  gap:32px;
+  gap:30px;
   font-weight:800;
 }
+nav a{
+  cursor:pointer;
+}
+
 .hero{
-  min-height:560px;
   text-align:center;
-  padding:80px 20px 60px;
+  padding:80px 20px 130px;
   background:
-    linear-gradient(rgba(255,255,255,.55),rgba(255,255,255,.82)),
+    linear-gradient(rgba(255,255,255,.50),rgba(255,255,255,.86)),
     url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=80');
   background-size:cover;
   background-position:center;
@@ -57,9 +61,7 @@ nav{
   margin:0;
   font-weight:900;
 }
-.hero h1 strong{
-  color:#5146d8;
-}
+.hero h1 strong{color:#5146d8}
 .hero p{
   font-size:20px;
   font-weight:700;
@@ -68,7 +70,7 @@ nav{
 
 main{
   max-width:1280px;
-  margin:-70px auto 80px;
+  margin:-90px auto 80px;
   padding:0 28px;
   position:relative;
   z-index:2;
@@ -81,9 +83,6 @@ main{
   box-shadow:0 18px 50px rgba(0,0,0,.12);
 }
 .section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
   margin-bottom:24px;
 }
 .section-title h2{
@@ -104,16 +103,14 @@ main{
 }
 .city-card{
   position:relative;
-  height:190px;
+  height:200px;
   border-radius:24px;
   overflow:hidden;
   cursor:pointer;
   box-shadow:0 12px 28px rgba(0,0,0,.16);
   transition:.25s;
 }
-.city-card:hover{
-  transform:translateY(-6px);
-}
+.city-card:hover{transform:translateY(-6px)}
 .city-card img{
   width:100%;
   height:100%;
@@ -123,7 +120,7 @@ main{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.65),rgba(0,0,0,.05));
+  background:linear-gradient(to top,rgba(0,0,0,.68),rgba(0,0,0,.08));
 }
 .city-card h3{
   position:absolute;
@@ -131,43 +128,132 @@ main{
   bottom:18px;
   color:white;
   margin:0;
-  font-size:24px;
+  font-size:25px;
   z-index:1;
 }
 .city-card span{
   position:absolute;
   right:14px;
   top:14px;
-  background:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.92);
   color:#111;
-  padding:6px 10px;
+  padding:6px 11px;
   border-radius:999px;
   font-size:13px;
   font-weight:900;
   z-index:1;
 }
 
-.news{
+.city-detail{
+  display:none;
   margin-top:34px;
+  background:#fff;
+  border-radius:30px;
+  padding:30px;
+  box-shadow:0 14px 40px rgba(0,0,0,.09);
+}
+.city-detail.active{display:block}
+.detail-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:center;
+  margin-bottom:22px;
+}
+.detail-head h2{
+  margin:0;
+  font-size:28px;
+}
+.detail-head p{
+  margin:6px 0 0;
+  color:#666;
+  font-weight:700;
+}
+.close-btn{
+  border:0;
+  background:#102033;
+  color:#fff;
+  border-radius:999px;
+  padding:11px 18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.detail-grid{
   display:grid;
-  grid-template-columns:1.2fr .8fr;
+  grid-template-columns:1fr 380px;
   gap:24px;
 }
-.panel{
+.news-list{
+  display:grid;
+  gap:14px;
+}
+.news-item{
+  border:1px solid #e6edf2;
+  border-radius:18px;
+  padding:18px;
+  background:#fbfdff;
+}
+.news-item strong{
+  font-size:18px;
+}
+.news-item p{
+  margin:8px 0 0;
+  color:#666;
+  line-height:1.5;
+}
+
+.upload-box{
+  background:#f4fbf8;
+  border-radius:22px;
+  padding:22px;
+}
+.upload-box h3{
+  margin:0 0 14px;
+}
+.upload-box input,
+.upload-box textarea,
+.upload-box select{
+  width:100%;
+  border:1px solid #d8e4e8;
+  border-radius:14px;
+  padding:13px;
+  margin-bottom:10px;
+  font-size:15px;
+}
+.upload-box textarea{
+  height:110px;
+  resize:none;
+}
+.upload-box button{
+  width:100%;
+  border:0;
+  background:#176bd6;
+  color:#fff;
+  border-radius:14px;
+  padding:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+.posted-list{
+  margin-top:18px;
+  display:grid;
+  gap:12px;
+}
+.posted{
+  border-radius:16px;
+  background:white;
+  padding:14px;
+  border:1px solid #e1ece8;
+}
+.posted b{display:block;margin-bottom:5px}
+
+.search-panel{
+  margin-top:30px;
   background:#fff;
   border-radius:28px;
   padding:28px;
   box-shadow:0 14px 40px rgba(0,0,0,.09);
-}
-.panel h2{
-  margin:0 0 18px;
-  font-size:24px;
-}
-.list p{
-  padding:13px 0;
-  border-bottom:1px solid #eee;
-  margin:0;
-  font-weight:700;
 }
 .search-box{
   display:flex;
@@ -202,7 +288,7 @@ footer{
   nav{display:none}
   .hero h1{font-size:38px}
   .city-grid{grid-template-columns:repeat(2,1fr)}
-  .news{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
 }
 @media(max-width:560px){
   header{padding:0 18px}
@@ -211,7 +297,10 @@ footer{
   .hero h1{font-size:30px}
   .city-section{padding:22px}
   .city-grid{grid-template-columns:1fr}
-  .city-card{height:180px}
+  .city-card{height:185px}
+  .detail-head{align-items:flex-start;flex-direction:column}
+  .search-box{flex-direction:column}
+  .search-box button{padding:15px}
 }
 </style>
 </head>
@@ -224,11 +313,9 @@ footer{
     <span>14개 시·군 문화예술 플랫폼</span>
   </div>
   <nav>
-    <a href="#">문화소식</a>
-    <a href="#">행사·축제</a>
-    <a href="#">전시·공연</a>
-    <a href="#">문화유산</a>
-    <a href="#">검색</a>
+    <a onclick="scrollToCities()">시·군 바로가기</a>
+    <a onclick="scrollToSearch()">문화소식 검색</a>
+    <a onclick="openCity('전주시')">소식 올리기</a>
   </nav>
 </header>
 
@@ -237,111 +324,77 @@ footer{
     전북 14개 시·군의<br>
     <strong>문화예술소식</strong>을 한곳에
   </h1>
-  <p>행사 · 축제 · 전시 · 공연 · 문화유산 · 지역문화 정보를 한눈에 보는 전문 플랫폼</p>
+  <p>지역을 선택하면 해당 시·군 문화예술소식을 보고 직접 소식을 올릴 수 있습니다.</p>
 </section>
 
 <main>
 
-<section class="city-section">
+<section class="city-section" id="cities">
   <div class="section-title">
-    <div>
-      <h2>14개 시·군 문화소식 바로가기</h2>
-      <p>각 지역 이미지를 클릭하면 해당 시·군 문화소식으로 이동합니다.</p>
-    </div>
+    <h2>전북 14개 시·군 바로가기</h2>
+    <p>대표 이미지를 클릭하면 해당 지역 문화예술소식 창이 열립니다.</p>
   </div>
 
   <div class="city-grid">
+    <div class="city-card" onclick="openCity('전주시')"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80"><span>한옥·예술</span><h3>전주시</h3></div>
+    <div class="city-card" onclick="openCity('군산시')"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80"><span>근대문화</span><h3>군산시</h3></div>
+    <div class="city-card" onclick="openCity('익산시')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=80"><span>백제문화</span><h3>익산시</h3></div>
+    <div class="city-card" onclick="openCity('정읍시')"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80"><span>내장산·문화</span><h3>정읍시</h3></div>
 
-    <div class="city-card" onclick="goCity('전주시')">
-      <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=900&q=80">
-      <span>문화중심</span><h3>전주시</h3>
-    </div>
+    <div class="city-card" onclick="openCity('남원시')"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80"><span>춘향문화</span><h3>남원시</h3></div>
+    <div class="city-card" onclick="openCity('김제시')"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80"><span>평야·축제</span><h3>김제시</h3></div>
+    <div class="city-card" onclick="openCity('완주군')"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80"><span>예술마을</span><h3>완주군</h3></div>
+    <div class="city-card" onclick="openCity('진안군')"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80"><span>마이산</span><h3>진안군</h3></div>
 
-    <div class="city-card" onclick="goCity('군산시')">
-      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80">
-      <span>근대문화</span><h3>군산시</h3>
-    </div>
+    <div class="city-card" onclick="openCity('무주군')"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=900&q=80"><span>산악문화</span><h3>무주군</h3></div>
+    <div class="city-card" onclick="openCity('장수군')"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80"><span>자연문화</span><h3>장수군</h3></div>
+    <div class="city-card" onclick="openCity('임실군')"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=900&q=80"><span>치즈·문화</span><h3>임실군</h3></div>
+    <div class="city-card" onclick="openCity('순창군')"><img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=900&q=80"><span>전통장류</span><h3>순창군</h3></div>
 
-    <div class="city-card" onclick="goCity('익산시')">
-      <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=900&q=80">
-      <span>백제문화</span><h3>익산시</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('정읍시')">
-      <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80">
-      <span>내장산</span><h3>정읍시</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('남원시')">
-      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80">
-      <span>춘향문화</span><h3>남원시</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('김제시')">
-      <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80">
-      <span>평야문화</span><h3>김제시</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('완주군')">
-      <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80">
-      <span>예술마을</span><h3>완주군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('진안군')">
-      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80">
-      <span>마이산</span><h3>진안군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('무주군')">
-      <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=900&q=80">
-      <span>산악문화</span><h3>무주군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('장수군')">
-      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80">
-      <span>자연문화</span><h3>장수군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('임실군')">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80">
-      <span>치즈문화</span><h3>임실군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('순창군')">
-      <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=900&q=80">
-      <span>전통장류</span><h3>순창군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('고창군')">
-      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80">
-      <span>세계유산</span><h3>고창군</h3>
-    </div>
-
-    <div class="city-card" onclick="goCity('부안군')">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80">
-      <span>변산반도</span><h3>부안군</h3>
-    </div>
-
+    <div class="city-card" onclick="openCity('고창군')"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"><span>세계유산</span><h3>고창군</h3></div>
+    <div class="city-card" onclick="openCity('부안군')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80"><span>변산반도</span><h3>부안군</h3></div>
   </div>
 </section>
 
-<section class="news">
-  <div class="panel">
-    <h2>주요 문화예술소식</h2>
-    <div class="list">
-      <p>전북 주요 행사·축제 소식 모음</p>
-      <p>지역 예술가 전시·공연 정보</p>
-      <p>문화유산 탐방 및 교육 프로그램</p>
-      <p>시민 참여 문화소식 게시판 준비 중</p>
+<section class="city-detail" id="cityDetail">
+  <div class="detail-head">
+    <div>
+      <h2 id="cityTitle">전주시 문화예술소식</h2>
+      <p id="cityDesc">지역의 행사, 축제, 전시, 공연 소식을 확인하고 직접 올려보세요.</p>
     </div>
+    <button class="close-btn" onclick="closeCity()">닫기</button>
   </div>
 
-  <div class="panel">
-    <h2>문화소식 검색</h2>
-    <div class="search-box">
-      <input id="searchInput" placeholder="지역명 또는 행사명을 입력하세요">
-      <button onclick="searchCulture()">검색</button>
+  <div class="detail-grid">
+    <div>
+      <div class="news-list" id="cityNews"></div>
     </div>
+
+    <div class="upload-box">
+      <h3>문화예술소식 올리기</h3>
+      <select id="postType">
+        <option>행사·축제</option>
+        <option>전시·공연</option>
+        <option>문화유산</option>
+        <option>교육·체험</option>
+        <option>기타 문화소식</option>
+      </select>
+      <input id="postTitle" placeholder="소식 제목">
+      <input id="postPlace" placeholder="장소">
+      <input id="postDate" placeholder="기간 예: 2026.05.01 ~ 05.10">
+      <textarea id="postText" placeholder="내용을 입력하세요"></textarea>
+      <button onclick="addPost()">등록하기</button>
+
+      <div class="posted-list" id="postedList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="search-panel" id="search">
+  <h2>문화소식 검색</h2>
+  <div class="search-box">
+    <input id="searchInput" placeholder="지역명 또는 행사명을 입력하세요">
+    <button onclick="searchCulture()">검색</button>
   </div>
 </section>
 
@@ -353,19 +406,98 @@ footer{
 </footer>
 
 <script>
-function goCity(city){
-  const query = encodeURIComponent(city + ' 문화행사 축제 전시 공연');
-  window.open('https://www.google.com/search?q=' + query, '_blank');
+let currentCity = "전주시";
+
+const sampleNews = {
+  "전주시":["전주 한옥마을 문화예술 프로그램","전주 지역 예술가 전시 소식","전주 공연예술 주간"],
+  "군산시":["군산 근대문화거리 문화행사","군산 시간여행 축제 소식","군산 예술창작공간 전시"],
+  "익산시":["익산 백제문화유산 탐방","익산 미술관 특별전","익산 시민문화공연"],
+  "정읍시":["정읍 내장산 문화예술 행사","정읍 지역 작가 전시","정읍 문화유산 이야기"],
+  "남원시":["남원 춘향문화 예술행사","남원 국악 공연 소식","남원 예술거리 프로그램"],
+  "김제시":["김제 지평선 문화축제","김제 농경문화 체험","김제 지역예술 공연"],
+  "완주군":["완주 예술마을 프로그램","완주 문화공간 전시","완주 시민참여 문화행사"],
+  "진안군":["진안 마이산 문화행사","진안 산촌문화 체험","진안 지역예술 소식"],
+  "무주군":["무주 산골문화예술제","무주 자연문화 체험","무주 공연예술 소식"],
+  "장수군":["장수 자연문화 축제","장수 지역문화 탐방","장수 예술동아리 공연"],
+  "임실군":["임실 치즈문화 축제","임실 문화예술 공연","임실 지역 전시 소식"],
+  "순창군":["순창 장류문화 체험","순창 전통문화 행사","순창 문화예술 공연"],
+  "고창군":["고창 세계유산 문화행사","고창 판소리 문화소식","고창 역사문화 탐방"],
+  "부안군":["부안 변산반도 문화여행","부안 해양문화 축제","부안 지역예술 전시"]
+};
+
+function openCity(city){
+  currentCity = city;
+  document.getElementById("cityTitle").innerText = city + " 문화예술소식";
+  document.getElementById("cityDesc").innerText = city + "의 행사, 축제, 전시, 공연 소식을 확인하고 직접 올려보세요.";
+
+  const list = sampleNews[city] || [];
+  const cityNews = document.getElementById("cityNews");
+  cityNews.innerHTML = "";
+
+  list.forEach((item, index)=>{
+    cityNews.innerHTML += `
+      <div class="news-item">
+        <strong>${item}</strong>
+        <p>${city}에서 진행되는 대표 문화예술소식입니다. 자세한 일정과 장소는 등록 후 업데이트됩니다.</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("postedList").innerHTML = "";
+  document.getElementById("cityDetail").classList.add("active");
+  document.getElementById("cityDetail").scrollIntoView({behavior:"smooth"});
+}
+
+function closeCity(){
+  document.getElementById("cityDetail").classList.remove("active");
+}
+
+function addPost(){
+  const type = document.getElementById("postType").value;
+  const title = document.getElementById("postTitle").value.trim();
+  const place = document.getElementById("postPlace").value.trim();
+  const date = document.getElementById("postDate").value.trim();
+  const text = document.getElementById("postText").value.trim();
+
+  if(!title){
+    alert("소식 제목을 입력해주세요.");
+    return;
+  }
+
+  const postedList = document.getElementById("postedList");
+  postedList.innerHTML = `
+    <div class="posted">
+      <b>${currentCity} · ${type}</b>
+      <strong>${title}</strong>
+      <p>${date || "기간 미입력"} / ${place || "장소 미입력"}</p>
+      <p>${text || "내용 없음"}</p>
+    </div>
+  ` + postedList.innerHTML;
+
+  document.getElementById("postTitle").value = "";
+  document.getElementById("postPlace").value = "";
+  document.getElementById("postDate").value = "";
+  document.getElementById("postText").value = "";
+
+  alert("문화예술소식이 등록되었습니다.");
 }
 
 function searchCulture(){
-  const q = document.getElementById('searchInput').value.trim();
+  const q = document.getElementById("searchInput").value.trim();
   if(!q){
-    alert('검색어를 입력해주세요.');
+    alert("검색어를 입력해주세요.");
     return;
   }
-  const query = encodeURIComponent(q + ' 전북 문화행사 축제 전시 공연');
-  window.open('https://www.google.com/search?q=' + query, '_blank');
+  const query = encodeURIComponent(q + " 전북 문화행사 축제 전시 공연");
+  window.open("https://www.google.com/search?q=" + query, "_blank");
+}
+
+function scrollToCities(){
+  document.getElementById("cities").scrollIntoView({behavior:"smooth"});
+}
+
+function scrollToSearch(){
+  document.getElementById("search").scrollIntoView({behavior:"smooth"});
 }
 </script>
 
