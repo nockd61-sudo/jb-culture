@@ -195,9 +195,34 @@ footer{text-align:center;padding:32px;color:#777}
 <footer>
   <span id="footerText">전북문화예술소식 · 14개 시·군 통합 문화플랫폼</span>
 </footer>
-<div style="position:fixed;bottom:10px;right:10px;opacity:.25;font-size:12px;z-index:9999;">
-  <button onclick="goHome()" style="border:0;background:#ddd;padding:6px 10px;border-radius:6px;">홈</button>
-  <button style="border:0;background:#ccc;padding:6px 10px;border-radius:6px;margin-left:5px;">관리자</button>
+<div style="
+  position:fixed;
+  bottom:12px;
+  right:12px;
+  z-index:99999;
+  display:flex;
+  gap:6px;
+  opacity:.35;
+">
+  <button onclick="goHome()" style="
+    border:0;
+    background:#111;
+    color:white;
+    padding:7px 11px;
+    border-radius:8px;
+    font-size:12px;
+    cursor:pointer;
+  ">홈화면</button>
+
+  <button onclick="adminLogin()" style="
+    border:0;
+    background:#6d4cff;
+    color:white;
+    padding:7px 11px;
+    border-radius:8px;
+    font-size:12px;
+    cursor:pointer;
+  ">관리자</button>
 </div>
 <script>
 const cityData={
@@ -553,7 +578,14 @@ function escapeHtml(value){
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
 }
-
+function adminLogin(){
+  const pw = prompt("관리자 비밀번호를 입력하세요");
+  if(pw === "1234"){
+    alert("관리자 모드입니다.");
+  }else if(pw){
+    alert("비밀번호가 맞지 않습니다.");
+  }
+}
 init();
 </script>
 </body>
