@@ -8,7 +8,7 @@
 <meta property="og:title" content="전북특별자치도문화예술소식">
 <meta property="og:description" content="14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80">
-<meta property="og:url" content="https://www.jeongeup-art.com/">
+<meta property="og:url" content="https://nockd61-sudo.github.io/jb-culture/">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 
@@ -553,8 +553,8 @@ function likePost(id){
 let currentShareData=null;
 
 function getShareUrl(id){
-  const base=location.origin+location.pathname;
-  return base+"?post="+encodeURIComponent(id);
+  const base = location.origin + location.pathname.replace(/\/?$/, "/");
+  return base + "?post=" + encodeURIComponent(id);
 }
 
 function sharePost(id){
@@ -592,12 +592,7 @@ function shareToKakao(){
   if(!currentShareData)return;
 
   try{
-    if(window.Kakao && !Kakao.isInitialized()){
-      /* 본인 카카오 JavaScript 키가 있으면 아래 YOUR_KAKAO_JAVASCRIPT_KEY를 바꾸세요. */
-      Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY");
-    }
-
-    if(window.Kakao && Kakao.isInitialized()){
+    if(window.Kakao && Kakao.isInitialized && Kakao.isInitialized()){
       Kakao.Share.sendDefault({
         objectType:"feed",
         content:{
@@ -615,10 +610,7 @@ function shareToKakao(){
     }
   }catch(e){}
 
-  navigator.clipboard.writeText(currentShareData.text+"
-"+currentShareData.url).then(()=>{
-    alert("카카오 공유 키가 없어 문구와 주소를 복사했습니다. 카카오톡에 붙여넣기 해주세요.");
-  });
+  copyShareText("카카오톡에 붙여넣을 공유 문구와 주소를 복사했습니다.");
 }
 
 function shareToFacebook(){
@@ -631,11 +623,17 @@ function shareToFacebook(){
 }
 
 function shareToInstagram(){
+  copyShareText("인스타그램에 붙여넣을 공유 문구와 주소를 복사했습니다.");
+}
+
+function copyShareText(message){
   if(!currentShareData)return;
-  navigator.clipboard.writeText(currentShareData.text+"
-"+currentShareData.url).then(()=>{
-    alert("인스타그램은 웹에서 직접 이미지 공유가 제한되어 있어요. 문구와 주소를 복사했습니다.");
-  });
+  const text=currentShareData.text+"\n"+currentShareData.url;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>alert(message));
+  }else{
+    prompt("아래 내용을 복사해주세요", text);
+  }
 }
 
 function copyPostText(id){
