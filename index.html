@@ -82,21 +82,9 @@ textarea{height:110px;resize:vertical}
 .comment-item{border:1px solid #ddd;border-radius:10px;padding:10px;margin-bottom:8px;background:#fafafa}
 .comment-item b{display:block;margin-bottom:4px}
 footer{text-align:center;padding:32px;color:#777}
-
-.share-menu-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
-.share-menu-bg.show{display:flex}
-.share-menu{background:#fff;border-radius:18px;width:min(360px,100%);padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
-.share-menu h3{margin:0 0 12px;text-align:center;font-size:20px}
-.share-menu button{width:100%;border:0;border-radius:12px;padding:13px;margin:6px 0;font-weight:900;cursor:pointer;font-size:15px}
-.share-kakao{background:#FEE500;color:#111}
-.share-facebook{background:#1877F2;color:#fff}
-.share-instagram{background:#E1306C;color:#fff}
-.share-close{background:#eee;color:#111}
-
 @media(max-width:900px){.city-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.topbar{align-items:flex-start;flex-direction:column}.hero-box{height:250px}.hero-text h1{font-size:32px}.city-grid{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}}
 </style>
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 </head>
 
 <body>
@@ -203,17 +191,6 @@ footer{text-align:center;padding:32px;color:#777}
       <button class="close" onclick="closeModal()">✕</button>
     </div>
     <div id="modalBody"></div>
-  </div>
-</div>
-
-
-<div class="share-menu-bg" id="shareMenuBg" onclick="if(event.target.id==='shareMenuBg') closeShareMenu()">
-  <div class="share-menu">
-    <h3>공유하기</h3>
-    <button class="share-kakao" onclick="shareKakao()">카카오톡 공유</button>
-    <button class="share-facebook" onclick="shareFacebook()">페이스북 공유</button>
-    <button class="share-instagram" onclick="shareInstagram()">인스타그램 공유</button>
-    <button class="share-close" onclick="closeShareMenu()">닫기</button>
   </div>
 </div>
 
@@ -536,81 +513,26 @@ function likePost(id){
   renderPosts();
 }
 
-let selectedShareId = null;
+function sharePost(id){
+  const p=posts.find(x=>x.id===id);
+  if(!p)return;
 
-function getShareData(){
-  const p = posts.find(x => x.id === selectedShareId);
-  if(!p) return null;
-
-  const url = location.origin + location.pathname + "#" + p.id;
-  const title = `[${p.city}문화소식] ${p.title}`;
-  const text = `${p.title}
+  const text=`${p.title}
 ${p.city} 문화소식
 기간: ${p.start} ~ ${p.end}
 장소: ${p.place}`;
 
-  return {p, url, title, text};
-}
-
-function sharePost(id){
-  selectedShareId = id;
-  const bg = document.getElementById("shareMenuBg");
-  if(bg) bg.classList.add("show");
-}
-
-function closeShareMenu(){
-  const bg = document.getElementById("shareMenuBg");
-  if(bg) bg.classList.remove("show");
-}
-
-function shareKakao(){
-  const data = getShareData();
-  if(!data) return;
-
-  if(window.Kakao && !Kakao.isInitialized()){
-    try{ Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY"); }catch(e){}
-  }
-
-  if(window.Kakao && Kakao.Share){
-    Kakao.Share.sendDefault({
-      objectType:"feed",
-      content:{
-        title:data.title,
-        description:data.text,
-        imageUrl:data.p.image,
-        link:{ mobileWebUrl:data.url, webUrl:data.url }
-      },
-      buttons:[
-        { title:"자세히 보기", link:{ mobileWebUrl:data.url, webUrl:data.url } }
-      ]
-    });
+  if(navigator.share){
+    navigator.share({
+      title:p.title,
+      text,
+      url:location.href
+    }).catch(()=>{});
   }else{
-    navigator.clipboard.writeText(data.text + "
-" + data.url).then(()=>{
-      alert("카카오 공유 설정 전이라 공유 문구와 링크를 복사했습니다.");
+    navigator.clipboard.writeText(text).then(()=>{
+      alert("공유 내용이 복사되었습니다.");
     });
   }
-}
-
-function shareFacebook(){
-  const data = getShareData();
-  if(!data) return;
-
-  window.open(
-    "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(data.url),
-    "_blank",
-    "width=600,height=650"
-  );
-}
-
-function shareInstagram(){
-  const data = getShareData();
-  if(!data) return;
-
-  navigator.clipboard.writeText(data.text + "
-" + data.url).then(()=>{
-    alert("인스타그램은 웹 직접공유가 제한되어 공유 문구와 링크를 복사했습니다. 인스타에 붙여넣기 해주세요.");
-  });
 }
 
 function copyPostText(id){
