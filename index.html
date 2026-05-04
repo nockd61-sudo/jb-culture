@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>전북특별자치도문화예술소식 | 14개 시·군 통합 플랫폼</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="전북특별자치도문화예술소식">
+<meta property="og:description" content="14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80">
+<meta property="og:url" content="https://www.jeongeup-art.com/">
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
 
 <style>
 *{box-sizing:border-box}
@@ -82,6 +89,22 @@ textarea{height:110px;resize:vertical}
 .comment-item{border:1px solid #ddd;border-radius:10px;padding:10px;margin-bottom:8px;background:#fafafa}
 .comment-item b{display:block;margin-bottom:4px}
 footer{text-align:center;padding:32px;color:#777}
+.share-layer{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
+.share-layer.show{display:flex}
+.share-box{width:min(380px,100%);background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+.share-box h3{margin:0 0 12px;font-size:20px}
+.share-preview{border:1px solid #ddd;border-radius:14px;overflow:hidden;margin-bottom:12px;background:#fafafa}
+.share-preview img{width:100%;height:190px;object-fit:cover;display:block}
+.share-preview div{padding:10px}
+.share-preview b{display:block;margin-bottom:4px;line-height:1.35}
+.share-preview span{font-size:13px;color:#666;word-break:break-all}
+.share-options{display:grid;gap:8px}
+.share-options button{border:0;border-radius:10px;padding:12px;font-weight:900;cursor:pointer}
+.share-kakao{background:#FEE500;color:#111}
+.share-facebook{background:#1877F2;color:#fff}
+.share-instagram{background:#E1306C;color:#fff}
+.share-close{background:#eee;color:#222}
+
 @media(max-width:900px){.city-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.topbar{align-items:flex-start;flex-direction:column}.hero-box{height:250px}.hero-text h1{font-size:32px}.city-grid{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}}
 </style>
@@ -191,6 +214,20 @@ footer{text-align:center;padding:32px;color:#777}
       <button class="close" onclick="closeModal()">✕</button>
     </div>
     <div id="modalBody"></div>
+  </div>
+</div>
+
+
+<div class="share-layer" id="shareLayer">
+  <div class="share-box">
+    <h3>공유하기</h3>
+    <div class="share-preview" id="sharePreview"></div>
+    <div class="share-options">
+      <button class="share-kakao" onclick="shareToKakao()">카카오톡 공유</button>
+      <button class="share-facebook" onclick="shareToFacebook()">페이스북 공유</button>
+      <button class="share-instagram" onclick="shareToInstagram()">인스타그램용 문구 복사</button>
+      <button class="share-close" onclick="closeShareLayer()">닫기</button>
+    </div>
   </div>
 </div>
 
@@ -513,26 +550,92 @@ function likePost(id){
   renderPosts();
 }
 
+let currentShareData=null;
+
+function getShareUrl(id){
+  const base=location.origin+location.pathname;
+  return base+"?post="+encodeURIComponent(id);
+}
+
 function sharePost(id){
   const p=posts.find(x=>x.id===id);
   if(!p)return;
 
-  const text=`${p.title}
+  currentShareData={
+    id,
+    title:`[${p.city}문화소식] ${p.title}`,
+    description:`${p.city} 문화소식 · ${p.start} ~ ${p.end} · ${p.place}`,
+    text:`${p.title}
 ${p.city} 문화소식
 기간: ${p.start} ~ ${p.end}
-장소: ${p.place}`;
+장소: ${p.place}`,
+    url:getShareUrl(id),
+    image:p.image
+  };
 
-  if(navigator.share){
-    navigator.share({
-      title:p.title,
-      text,
-      url:location.href
-    }).catch(()=>{});
-  }else{
-    navigator.clipboard.writeText(text).then(()=>{
-      alert("공유 내용이 복사되었습니다.");
-    });
-  }
+  document.getElementById("sharePreview").innerHTML=`
+    <img src="${currentShareData.image}" alt="공유 이미지">
+    <div>
+      <b>${escapeHtml(currentShareData.title)}</b>
+      <span>${escapeHtml(currentShareData.url)}</span>
+    </div>
+  `;
+
+  document.getElementById("shareLayer").classList.add("show");
+}
+
+function closeShareLayer(){
+  document.getElementById("shareLayer").classList.remove("show");
+}
+
+function shareToKakao(){
+  if(!currentShareData)return;
+
+  try{
+    if(window.Kakao && !Kakao.isInitialized()){
+      /* 본인 카카오 JavaScript 키가 있으면 아래 YOUR_KAKAO_JAVASCRIPT_KEY를 바꾸세요. */
+      Kakao.init("YOUR_KAKAO_JAVASCRIPT_KEY");
+    }
+
+    if(window.Kakao && Kakao.isInitialized()){
+      Kakao.Share.sendDefault({
+        objectType:"feed",
+        content:{
+          title:currentShareData.title,
+          description:currentShareData.description,
+          imageUrl:currentShareData.image,
+          link:{mobileWebUrl:currentShareData.url,webUrl:currentShareData.url}
+        },
+        buttons:[{
+          title:"사이트로 들어가기",
+          link:{mobileWebUrl:currentShareData.url,webUrl:currentShareData.url}
+        }]
+      });
+      return;
+    }
+  }catch(e){}
+
+  navigator.clipboard.writeText(currentShareData.text+"
+"+currentShareData.url).then(()=>{
+    alert("카카오 공유 키가 없어 문구와 주소를 복사했습니다. 카카오톡에 붙여넣기 해주세요.");
+  });
+}
+
+function shareToFacebook(){
+  if(!currentShareData)return;
+  window.open(
+    "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(currentShareData.url),
+    "_blank",
+    "width=650,height=650"
+  );
+}
+
+function shareToInstagram(){
+  if(!currentShareData)return;
+  navigator.clipboard.writeText(currentShareData.text+"
+"+currentShareData.url).then(()=>{
+    alert("인스타그램은 웹에서 직접 이미지 공유가 제한되어 있어요. 문구와 주소를 복사했습니다.");
+  });
 }
 
 function copyPostText(id){
@@ -612,7 +715,17 @@ function deletePost(id){
   renderPosts();
   alert("게시글이 삭제되었습니다.");
 }
+function openPostFromUrl(){
+  const params=new URLSearchParams(location.search);
+  const id=params.get("post");
+  if(!id)return;
+  setTimeout(()=>{
+    const found=posts.find(p=>p.id===id);
+    if(found) showDetail(id);
+  },300);
+}
 init();
+openPostFromUrl();
 </script>
 </body>
 </html>
