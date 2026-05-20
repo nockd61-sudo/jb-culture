@@ -336,6 +336,10 @@ function goHome(){
 }
 
 function openCity(city){
+  if (city === "정읍시") {
+  window.location.href = "https://www.jeongeup-art.com";
+  return;
+}
   currentCity=city;
   const data=cityData[city];
 
