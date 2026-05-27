@@ -111,6 +111,9 @@ footer{text-align:center;padding:32px;color:#777}
 .share-instagram{background:#E1306C;color:#fff}
 .share-close{background:#eee;color:#222}
 
+/* 소식올리기 영역은 처음에는 숨김 */
+#upload{display:none}
+
 @media(max-width:900px){.city-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
 
 /* 모바일 화면 최적화 수정본
@@ -505,6 +508,12 @@ function goHome(){
     "전북문화예술소식 · 14개 시·군 통합 문화플랫폼"
   );
   renderPosts();
+
+  const upload=document.getElementById("upload");
+  if(upload){
+    upload.style.display="none";
+  }
+
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -533,6 +542,12 @@ function openCity(city){
   document.getElementById("noticeTitle").innerText=`${city} 공지사항 미리보기`;
 
   renderPosts();
+
+  const upload=document.getElementById("upload");
+  if(upload){
+    upload.style.display="none";
+  }
+
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -911,7 +926,21 @@ function scrollBoard(){
 }
 
 function scrollUpload(){
-  document.getElementById("upload").scrollIntoView({behavior:"smooth"});
+  const upload=document.getElementById("upload");
+  if(!upload) return;
+
+  if(upload.style.display==="block"){
+    upload.style.display="none";
+  }else{
+    upload.style.display="block";
+
+    setTimeout(()=>{
+      upload.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+    },100);
+  }
 }
 
 function escapeHtml(value){
