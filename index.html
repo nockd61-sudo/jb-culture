@@ -111,6 +111,33 @@ footer{text-align:center;padding:32px;color:#777}
 .share-instagram{background:#E1306C;color:#fff}
 .share-close{background:#eee;color:#222}
 
+
+/* 문화이야기 팝업 */
+.story-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2500;align-items:center;justify-content:center;padding:18px;overflow:auto}
+.story-modal-bg.show{display:flex}
+.story-modal{background:#fff;border-radius:18px;width:min(960px,100%);max-height:88vh;overflow:auto;box-shadow:0 18px 45px rgba(0,0,0,.28)}
+.story-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid #ddd}
+.story-head h3{margin:0;font-size:22px;font-weight:900}
+.story-close{border:0;background:#eee;border-radius:999px;width:38px;height:38px;font-size:22px;cursor:pointer}
+.story-body{padding:22px 24px}
+.story-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.story-tabs button{border:0;border-radius:8px;padding:12px 20px;font-weight:900;cursor:pointer;background:#e5e7eb;color:#222}
+.story-tabs button.active{background:#6d4cff;color:#fff}
+.story-panel{border:1px solid #ddd;padding:22px;background:#fff}
+.story-panel h4{font-size:20px;margin:0 0 20px;font-weight:900}
+.story-notice{background:#fff1c7;color:#8a5a00;border-radius:8px;padding:13px 14px;margin-bottom:18px;font-size:14px}
+.story-item{padding:14px 0;border-bottom:1px solid #ddd}
+.story-item:last-child{border-bottom:0}
+.story-item-title{font-weight:900;font-size:16px;margin-bottom:8px}
+.story-item-meta{font-size:14px;color:#667085}
+.story-write-box{display:none;border:1px solid #ddd;padding:22px;background:#fff}
+.story-write-box h4{font-size:20px;margin:0 0 16px;font-weight:900}
+.story-write-box input,.story-write-box textarea{margin-bottom:10px}
+.story-write-actions{display:flex;gap:8px;flex-wrap:wrap}
+.story-save{border:0;background:#6d4cff;color:#fff;border-radius:8px;padding:12px 18px;font-weight:900;cursor:pointer}
+.story-cancel{border:0;background:#e5e7eb;color:#222;border-radius:8px;padding:12px 18px;font-weight:900;cursor:pointer}
+@media(max-width:560px){.story-modal-bg{padding:10px}.story-head{padding:18px}.story-body{padding:16px}.story-panel,.story-write-box{padding:16px}.story-tabs button{padding:10px 14px}}
+
 /* 소식올리기 영역은 처음에는 숨김 */
 #upload{display:none}
 
@@ -302,7 +329,7 @@ footer{text-align:center;padding:32px;color:#777}
     </a>
   <nav class="menu">
   <button onclick="goHome()">홈</button>
-  <button onclick="scrollBoard()">문화이야기</button>
+  <button onclick="openCultureStoryModal()">문화이야기</button>
   <button onclick="scrollUpload()">소식올리기</button>
 </nav>
   </div>
@@ -400,6 +427,37 @@ footer{text-align:center;padding:32px;color:#777}
 </div>
 
 
+
+<div class="story-modal-bg" id="cultureStoryModal">
+  <div class="story-modal">
+    <div class="story-head">
+      <h3>문화이야기</h3>
+      <button class="story-close" onclick="closeCultureStoryModal()">×</button>
+    </div>
+    <div class="story-body">
+      <div class="story-tabs">
+        <button id="storyListTab" class="active" onclick="showCultureStoryList()">게시글 보기</button>
+        <button id="storyWriteTab" onclick="showCultureStoryWrite()">글 쓰기</button>
+      </div>
+      <div class="story-panel" id="cultureStoryListBox">
+        <h4>전체 게시글 목록</h4>
+        <div class="story-notice">공고: 타행사 홍보, 비방글, 부적절한 게시글은 관리자에 의해 삭제됩니다.</div>
+        <div id="cultureStoryList"></div>
+      </div>
+      <div class="story-write-box" id="cultureStoryWriteBox">
+        <h4>문화이야기 글 쓰기</h4>
+        <input id="storyTitleInput" placeholder="제목을 입력하세요">
+        <input id="storyWriterInput" placeholder="작성자 이름">
+        <textarea id="storyTextInput" placeholder="문화 이야기 내용을 입력하세요." style="height:140px"></textarea>
+        <div class="story-write-actions">
+          <button class="story-save" onclick="addCultureStory()">등록하기</button>
+          <button class="story-cancel" onclick="showCultureStoryList()">목록으로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="share-layer" id="shareLayer">
   <div class="share-box">
     <h3>공유하기</h3>
@@ -468,6 +526,10 @@ let uploadedImage="";
 let posts=[];
 let comments={};
 let isAdmin=false;
+let cultureStories=[
+  {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."},
+  {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."}
+];
 
 const sampleImages=[
 "https://images.unsplash.com/photo-1507878866276-a947ef722fee?auto=format&fit=crop&w=800&q=80",
@@ -919,6 +981,65 @@ function searchGoogle(){
     "https://www.google.com/search?q="+encodeURIComponent(region+" "+q+" 문화 행사 전시 공연 축제"),
     "_blank"
   );
+}
+
+
+function openCultureStoryModal(){
+  renderCultureStoryList();
+  showCultureStoryList();
+  document.getElementById("cultureStoryModal").classList.add("show");
+}
+
+function closeCultureStoryModal(){
+  document.getElementById("cultureStoryModal").classList.remove("show");
+}
+
+function showCultureStoryList(){
+  document.getElementById("cultureStoryListBox").style.display="block";
+  document.getElementById("cultureStoryWriteBox").style.display="none";
+  document.getElementById("storyListTab").classList.add("active");
+  document.getElementById("storyWriteTab").classList.remove("active");
+  renderCultureStoryList();
+}
+
+function showCultureStoryWrite(){
+  document.getElementById("cultureStoryListBox").style.display="none";
+  document.getElementById("cultureStoryWriteBox").style.display="block";
+  document.getElementById("storyListTab").classList.remove("active");
+  document.getElementById("storyWriteTab").classList.add("active");
+}
+
+function renderCultureStoryList(){
+  const list=document.getElementById("cultureStoryList");
+  if(!list) return;
+  list.innerHTML=cultureStories.map(item=>`
+    <div class="story-item">
+      <div class="story-item-title">${escapeHtml(item.title)}</div>
+      <div class="story-item-meta">${escapeHtml(item.date)} · ${escapeHtml(item.writer)}</div>
+    </div>
+  `).join("");
+}
+
+function addCultureStory(){
+  const title=document.getElementById("storyTitleInput").value.trim();
+  const writer=document.getElementById("storyWriterInput").value.trim() || "시민";
+  const text=document.getElementById("storyTextInput").value.trim();
+
+  if(!title){
+    alert("제목을 입력해주세요.");
+    return;
+  }
+
+  const now=new Date();
+  const date=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,"0")}.${String(now.getDate()).padStart(2,"0")}`;
+  cultureStories.unshift({title,date,writer,text});
+
+  document.getElementById("storyTitleInput").value="";
+  document.getElementById("storyWriterInput").value="";
+  document.getElementById("storyTextInput").value="";
+
+  showCultureStoryList();
+  alert("문화이야기 글이 등록되었습니다.");
 }
 
 function scrollBoard(){
