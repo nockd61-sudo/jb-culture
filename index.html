@@ -610,7 +610,14 @@ function openCity(city){
     upload.style.display="none";
   }
 
-  window.scrollTo({top:0,behavior:"smooth"});
+  // 시·군을 선택하면 상단으로 가지 않고
+  // 해당 시·군의 가까운 날짜순 문화소식 목록으로 바로 이동합니다.
+  setTimeout(()=>{
+    document.getElementById("board").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  },100);
 }
 
 function setPage(brand,sub,hero,desc,img,board,upload,uploadDesc,footer){
