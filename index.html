@@ -208,22 +208,74 @@ let cultureStories=[
   {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."},
   {title:"전북문화예술소식 안내",date:"2026.05.28(목)",writer:"관리자",text:"14개 시·군 문화소식을 함께 모아보는 공간입니다."}
 ];
+
+// ==============================
+// 브라우저 저장 기능(localStorage)
+// 새로고침해도 소식·댓글·좋아요·조회수가 유지됩니다.
+// 단, 같은 브라우저 기준 저장입니다. 모든 방문자가 함께 보려면 DB 연결이 필요합니다.
+// ==============================
+const STORAGE_KEYS={
+  posts:"jb_culture_posts_v1",
+  comments:"jb_culture_comments_v1",
+  stories:"jb_culture_stories_v1"
+};
+
+function loadSavedData(){
+  try{
+    const savedPosts=localStorage.getItem(STORAGE_KEYS.posts);
+    const savedComments=localStorage.getItem(STORAGE_KEYS.comments);
+    const savedStories=localStorage.getItem(STORAGE_KEYS.stories);
+
+    if(savedPosts) posts=JSON.parse(savedPosts)||[];
+    if(savedComments) comments=JSON.parse(savedComments)||{};
+    if(savedStories) cultureStories=JSON.parse(savedStories)||cultureStories;
+  }catch(err){
+    console.warn("저장된 데이터를 불러오지 못했습니다.", err);
+  }
+}
+
+function savePosts(){
+  try{
+    localStorage.setItem(STORAGE_KEYS.posts, JSON.stringify(posts));
+    localStorage.setItem(STORAGE_KEYS.comments, JSON.stringify(comments));
+  }catch(err){
+    alert("브라우저 저장공간이 부족하거나 저장이 차단되어 소식 저장에 실패했습니다.");
+    console.warn("소식 저장 실패", err);
+  }
+}
+
+function saveStories(){
+  try{
+    localStorage.setItem(STORAGE_KEYS.stories, JSON.stringify(cultureStories));
+  }catch(err){
+    console.warn("문화이야기 저장 실패", err);
+  }
+}
 const sampleImages=[
 "https://images.unsplash.com/photo-1507878866276-a947ef722fee?auto=format&fit=crop&w=800&q=80",
 "https://images.unsplash.com/photo-1545987796-200677ee1011?auto=format&fit=crop&w=800&q=80"
 ];
 
 function init(){
+  loadSavedData();
+
   const grid=document.getElementById("cityGrid");
   Object.keys(cityData).forEach(city=>{
     grid.innerHTML+=`<button class="city-btn" onclick="openCity('${city}')" style="background-image:url('${cityData[city].img}')"><span>${city}</span></button>`;
   });
-  Object.keys(cityData).forEach(city=>{
-    posts.push(
-      {id:makeId(),city,type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
-      {id:makeId(),city,type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
-    );
-  });
+
+  // 저장된 게시글이 없을 때만 기본 샘플 게시글을 만듭니다.
+  // 저장된 글이 있는데 매번 샘플을 또 추가하면 새로고침 때마다 글이 중복됩니다.
+  if(posts.length===0){
+    Object.keys(cityData).forEach(city=>{
+      posts.push(
+        {id:makeId(),city,type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
+        {id:makeId(),city,type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
+      );
+    });
+    savePosts();
+  }
+
   renderPosts();
   renderCultureStories();
 }
@@ -306,7 +358,8 @@ function addPost(){
   const id=makeId();
   posts.unshift({id,city:currentCity,type:document.getElementById("postType").value,title,start:document.getElementById("postStart").value||"날짜 미입력",end:document.getElementById("postEnd").value||"날짜 미입력",place:document.getElementById("postPlace").value||"장소 미입력",text:document.getElementById("postText").value||"",image:uploadedImage||cityData[currentCity].img,likes:0,views:0});
   comments[id]=[];
-  resetForm(); renderPosts(); scrollBoard(); alert(`${currentCity} 문화소식이 등록되었습니다.`);
+  savePosts();
+  resetForm(); renderPosts(); scrollBoard(); alert(`${currentCity} 문화소식이 등록되었습니다. 새로고침해도 유지됩니다.`);
 }
 
 function resetForm(){
@@ -316,7 +369,7 @@ function resetForm(){
 
 function showDetail(id){
   const p=posts.find(x=>x.id===id); if(!p)return;
-  p.views=(p.views||0)+1; if(!comments[id]) comments[id]=[]; renderPosts();
+  p.views=(p.views||0)+1; if(!comments[id]) comments[id]=[]; savePosts(); renderPosts();
   document.getElementById("modalTitle").innerText=p.title;
   document.getElementById("modalBody").innerHTML=`
     <img src="${p.image}">
@@ -328,8 +381,16 @@ function showDetail(id){
 }
 
 function closeModal(){ document.getElementById("modalBg").classList.remove("show"); }
-function addComment(id){ const name=document.getElementById("commentName").value.trim()||"시민"; const text=document.getElementById("commentText").value.trim(); if(!text){alert("댓글 내용을 입력해주세요.");return;} comments[id].push({name,text}); showDetail(id); }
-function likePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; p.likes=(p.likes||0)+1; renderPosts(); }
+function addComment(id){
+  const name=document.getElementById("commentName").value.trim()||"시민";
+  const text=document.getElementById("commentText").value.trim();
+  if(!text){alert("댓글 내용을 입력해주세요.");return;}
+  if(!comments[id]) comments[id]=[];
+  comments[id].push({name,text});
+  savePosts();
+  showDetail(id);
+}
+function likePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; p.likes=(p.likes||0)+1; savePosts(); renderPosts(); }
 function sharePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`[${p.city}문화소식] ${p.title}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n${location.href}`; if(navigator.share){navigator.share({title:p.title,text}).catch(()=>{});} else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert("공유 문구가 복사되었습니다."));} else {prompt("아래 내용을 복사하세요", text);} }
 function copyPostText(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`${p.title}\n지역: ${p.city}\n분류: ${p.type}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n\n${p.text}`; navigator.clipboard.writeText(text).then(()=>alert("내용이 복사되었습니다.")); }
 
@@ -353,10 +414,10 @@ function closeCultureStoryModal(){ document.getElementById("cultureStoryModal").
 function showCultureStoryList(){ document.getElementById("storyListTab").classList.add("active"); document.getElementById("storyWriteTab").classList.remove("active"); document.getElementById("cultureStoryListBox").style.display="block"; document.getElementById("cultureStoryWriteBox").style.display="none"; renderCultureStories(); }
 function showCultureStoryWrite(){ document.getElementById("storyListTab").classList.remove("active"); document.getElementById("storyWriteTab").classList.add("active"); document.getElementById("cultureStoryListBox").style.display="none"; document.getElementById("cultureStoryWriteBox").style.display="block"; }
 function renderCultureStories(){ const list=document.getElementById("cultureStoryList"); if(!list)return; list.innerHTML=cultureStories.map(s=>`<div class="story-item"><div class="story-item-title">${escapeHtml(s.title)}</div><div class="story-item-meta">${escapeHtml(s.date)} · ${escapeHtml(s.writer)}</div><p>${escapeHtml(s.text)}</p></div>`).join(""); }
-function addCultureStory(){ const title=document.getElementById("storyTitleInput").value.trim(), writer=document.getElementById("storyWriterInput").value.trim()||"시민", text=document.getElementById("storyTextInput").value.trim(); if(!title||!text){alert("제목과 내용을 입력해주세요.");return;} const d=new Date(); cultureStories.unshift({title,writer,text,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`}); document.getElementById("storyTitleInput").value=""; document.getElementById("storyWriterInput").value=""; document.getElementById("storyTextInput").value=""; showCultureStoryList(); }
+function addCultureStory(){ const title=document.getElementById("storyTitleInput").value.trim(), writer=document.getElementById("storyWriterInput").value.trim()||"시민", text=document.getElementById("storyTextInput").value.trim(); if(!title||!text){alert("제목과 내용을 입력해주세요.");return;} const d=new Date(); cultureStories.unshift({title,writer,text,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`}); saveStories(); document.getElementById("storyTitleInput").value=""; document.getElementById("storyWriterInput").value=""; document.getElementById("storyTextInput").value=""; showCultureStoryList(); }
 
 function adminLogin(){ const pw=prompt("관리자 비밀번호를 입력하세요"); if(pw==="1234"){isAdmin=true;alert("관리자 모드가 켜졌습니다.");renderPosts();} else if(pw){alert("비밀번호가 맞지 않습니다.");} }
-function deletePost(id){ if(!isAdmin){alert("관리자 로그인 후 삭제할 수 있습니다.");return;} const post=posts.find(p=>p.id===id); if(!post)return; if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`))return; posts=posts.filter(p=>p.id!==id); delete comments[id]; closeModal(); renderPosts(); alert("게시글이 삭제되었습니다."); }
+function deletePost(id){ if(!isAdmin){alert("관리자 로그인 후 삭제할 수 있습니다.");return;} const post=posts.find(p=>p.id===id); if(!post)return; if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`))return; posts=posts.filter(p=>p.id!==id); delete comments[id]; savePosts(); closeModal(); renderPosts(); alert("게시글이 삭제되었습니다."); }
 function escapeHtml(value){ return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
 init();
