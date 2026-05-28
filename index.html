@@ -8,16 +8,9 @@
 <meta property="og:title" content="전북특별자치도문화예술소식">
 <meta property="og:description" content="14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://nockd61-sudo.github.io/jb-culture/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="전북특별자치도문화예술소식">
-<meta name="twitter:description" content="14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:'Noto Sans KR',Arial,sans-serif;background:#f3f3f3;color:#222}
@@ -30,7 +23,7 @@ header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-inde
 .brand span{display:block;font-size:12px;color:#777;margin-top:3px}
 .menu{display:flex;gap:8px;flex-wrap:wrap}
 .menu button{border:1px solid #ddd;background:#fff;border-radius:999px;padding:9px 13px;font-weight:800;cursor:pointer}
-.menu button.active,.menu button:hover{background:#6d4cff;color:white;border-color:#6d4cff}
+.menu button:hover{background:#6d4cff;color:white;border-color:#6d4cff}
 .hero{padding:22px 0 12px}
 .hero-box{height:330px;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 12px 30px rgba(0,0,0,.12);background:#ddd}
 .hero-box img{width:100%;height:100%;object-fit:cover}
@@ -45,6 +38,12 @@ header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-inde
 .city-btn:after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.42)}
 .city-btn span{position:relative;z-index:1}
 .section-title{text-align:center;font-size:26px;margin:26px 0 16px;font-weight:900}
+.city-action-bar{display:none;background:#fff;border:2px solid #6d4cff;border-radius:18px;padding:14px 16px;margin:0 0 16px;box-shadow:0 10px 24px rgba(109,76,255,.13)}
+.city-action-inner{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.city-action-title{font-weight:900;font-size:17px}
+.city-action-desc{color:#666;font-size:13px;margin-top:3px}
+.city-upload-btn{border:0;background:#6d4cff;color:#fff;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;box-shadow:0 8px 18px rgba(109,76,255,.25)}
+.city-upload-btn:hover{background:#5137d9}
 .ai-search{background:#fff;border:1px solid #ddd;border-radius:18px;padding:16px;margin-bottom:18px;box-shadow:0 10px 24px rgba(0,0,0,.06)}
 .search-row{display:grid;grid-template-columns:1fr 100px;gap:8px}
 .search-row input{border:1px solid #ddd;border-radius:8px;padding:12px}
@@ -54,297 +53,63 @@ header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-inde
 .thumb{aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#eee;position:relative;cursor:pointer}
 .thumb img{width:100%;height:100%;object-fit:cover}
 .badge{position:absolute;top:8px;left:8px;background:#6d4cff;color:#fff;border-radius:999px;padding:5px 8px;font-size:12px;font-weight:900}
-.meta{padding:9px 2px 0} 
-.meta .date{font-size:12px;color:#777}
-.meta .title{font-weight:900;margin:5px 0;line-height:1.35}
-.meta .place{font-size:13px;color:#777}
+.meta{padding:9px 2px 0}.meta .date{font-size:12px;color:#777}.meta .title{font-weight:900;margin:5px 0;line-height:1.35}.meta .place{font-size:13px;color:#777}
 .stat-row{display:flex;gap:10px;font-size:12px;color:#777;margin-top:6px}
 .actions{display:flex;gap:6px;margin-top:10px}
 .actions button{flex:1;border:0;border-radius:8px;padding:8px;background:#888;color:#fff;font-weight:800;cursor:pointer}
-.actions button:nth-child(2){background:#ef4444}
-.actions button:last-child{background:#6d4cff}
-.upload-box{background:#fff;border:1px solid #ddd;border-radius:18px;padding:20px;margin:26px auto;box-shadow:0 10px 24px rgba(0,0,0,.06)}
-.upload-box h3{margin:0 0 8px;font-size:22px}
-.upload-box p{margin:0 0 15px;color:#777}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.field.full{grid-column:1/-1}
-label{font-weight:800;font-size:14px}
-input,textarea,select{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;margin-top:6px}
-textarea{height:110px;resize:vertical}
-.preview img{width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-top:10px;background:#eee}
-.submit{margin-top:14px;border:0;background:#6d4cff;color:#fff;border-radius:10px;padding:13px 18px;font-weight:900;cursor:pointer}
-.reset{margin-top:14px;border:0;background:#e5e7eb;color:#222;border-radius:10px;padding:13px 18px;font-weight:900;cursor:pointer}
+.actions button:nth-child(2){background:#ef4444}.actions button:last-child{background:#6d4cff}
+.upload-box{display:none;background:#fff;border:1px solid #ddd;border-radius:18px;padding:20px;margin:26px auto;box-shadow:0 10px 24px rgba(0,0,0,.06)}
+.upload-box h3{margin:0 0 8px;font-size:22px}.upload-box p{margin:0 0 15px;color:#777}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field.full{grid-column:1/-1}
+label{font-weight:800;font-size:14px}input,textarea,select{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;margin-top:6px}
+textarea{height:110px;resize:vertical}.preview img{width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-top:10px;background:#eee}
+.submit,.reset{margin-top:14px;border:0;border-radius:10px;padding:13px 18px;font-weight:900;cursor:pointer}.submit{background:#6d4cff;color:#fff}.reset{background:#e5e7eb;color:#222}
 .notice{background:#fff;border:1px solid #ddd;border-radius:18px;padding:20px;margin:20px auto;box-shadow:0 10px 24px rgba(0,0,0,.06)}
-.notice h3{margin:0 0 12px}
-.notice-item{border-bottom:1px dashed #ddd;padding:10px 0;font-weight:700}
-.notice-item:last-child{border-bottom:0}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:flex-start;justify-content:center;padding:80px 20px 30px;overflow:auto}
-.modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:18px;max-width:820px;width:100%;max-height:90vh;overflow:auto;padding:22px}
-.modal img{width:100%;max-height:60vh;object-fit:contain;background:#eee;border-radius:12px}
-.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;border-bottom:1px solid #eee;padding-bottom:12px}
-.close{border:0;background:#eee;border-radius:999px;width:38px;height:38px;cursor:pointer}
-.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.detail-actions button{border:0;border-radius:10px;padding:10px 14px;font-weight:900;color:#fff;cursor:pointer}
-.like-btn{background:#ef4444}
-.share-btn{background:#6d4cff}
-.copy-btn{background:#111}
-.admin-delete-btn{background:#111!important}
-.detail-meta{color:#666;font-weight:700;line-height:1.8}
-.comment-box{margin-top:25px;border-top:1px solid #eee;padding-top:18px}
-.comment-item{border:1px solid #ddd;border-radius:10px;padding:10px;margin-bottom:8px;background:#fafafa}
-.comment-item b{display:block;margin-bottom:4px}
-footer{text-align:center;padding:32px;color:#777}
-.share-layer{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
-.share-layer.show{display:flex}
-.share-box{width:min(380px,100%);background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
-.share-box h3{margin:0 0 12px;font-size:20px}
-.share-preview{border:1px solid #ddd;border-radius:14px;overflow:hidden;margin-bottom:12px;background:#fafafa}
-.share-preview img{width:100%;height:190px;object-fit:cover;display:block}
-.share-preview div{padding:10px}
-.share-preview b{display:block;margin-bottom:4px;line-height:1.35}
-.share-preview span{font-size:13px;color:#666;word-break:break-all}
-.share-options{display:grid;gap:8px}
-.share-options button{border:0;border-radius:10px;padding:12px;font-weight:900;cursor:pointer}
-.share-kakao{background:#FEE500;color:#111}
-.share-facebook{background:#1877F2;color:#fff}
-.share-instagram{background:#E1306C;color:#fff}
-.share-close{background:#eee;color:#222}
-
-
-/* 문화이야기 팝업 */
-.story-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2500;align-items:center;justify-content:center;padding:18px;overflow:auto}
-.story-modal-bg.show{display:flex}
+.notice h3{margin:0 0 12px}.notice-item{border-bottom:1px dashed #ddd;padding:10px 0;font-weight:700}.notice-item:last-child{border-bottom:0}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:flex-start;justify-content:center;padding:80px 20px 30px;overflow:auto}.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:820px;width:100%;max-height:90vh;overflow:auto;padding:22px}.modal img{width:100%;max-height:60vh;object-fit:contain;background:#eee;border-radius:12px}
+.modal-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;border-bottom:1px solid #eee;padding-bottom:12px}.close{border:0;background:#eee;border-radius:999px;width:38px;height:38px;cursor:pointer}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.detail-actions button{border:0;border-radius:10px;padding:10px 14px;font-weight:900;color:#fff;cursor:pointer}.like-btn{background:#ef4444}.share-btn{background:#6d4cff}.copy-btn,.admin-delete-btn{background:#111!important}
+.detail-meta{color:#666;font-weight:700;line-height:1.8}.comment-box{margin-top:25px;border-top:1px solid #eee;padding-top:18px}.comment-item{border:1px solid #ddd;border-radius:10px;padding:10px;margin-bottom:8px;background:#fafafa}
+.story-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2500;align-items:center;justify-content:center;padding:18px;overflow:auto}.story-modal-bg.show{display:flex}
 .story-modal{background:#fff;border-radius:18px;width:min(960px,100%);max-height:88vh;overflow:auto;box-shadow:0 18px 45px rgba(0,0,0,.28)}
-.story-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid #ddd}
-.story-head h3{margin:0;font-size:22px;font-weight:900}
-.story-close{border:0;background:#eee;border-radius:999px;width:38px;height:38px;font-size:22px;cursor:pointer}
-.story-body{padding:22px 24px}
-.story-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.story-tabs button{border:0;border-radius:8px;padding:12px 20px;font-weight:900;cursor:pointer;background:#e5e7eb;color:#222}
-.story-tabs button.active{background:#6d4cff;color:#fff}
-.story-panel{border:1px solid #ddd;padding:22px;background:#fff}
-.story-panel h4{font-size:20px;margin:0 0 20px;font-weight:900}
-.story-notice{background:#fff1c7;color:#8a5a00;border-radius:8px;padding:13px 14px;margin-bottom:18px;font-size:14px}
-.story-item{padding:14px 0;border-bottom:1px solid #ddd}
-.story-item:last-child{border-bottom:0}
-.story-item-title{font-weight:900;font-size:16px;margin-bottom:8px}
-.story-item-meta{font-size:14px;color:#667085}
-.story-write-box{display:none;border:1px solid #ddd;padding:22px;background:#fff}
-.story-write-box h4{font-size:20px;margin:0 0 16px;font-weight:900}
-.story-write-box input,.story-write-box textarea{margin-bottom:10px}
-.story-write-actions{display:flex;gap:8px;flex-wrap:wrap}
-.story-save{border:0;background:#6d4cff;color:#fff;border-radius:8px;padding:12px 18px;font-weight:900;cursor:pointer}
-.story-cancel{border:0;background:#e5e7eb;color:#222;border-radius:8px;padding:12px 18px;font-weight:900;cursor:pointer}
-@media(max-width:560px){.story-modal-bg{padding:10px}.story-head{padding:18px}.story-body{padding:16px}.story-panel,.story-write-box{padding:16px}.story-tabs button{padding:10px 14px}}
-
-/* 소식올리기 영역은 처음에는 숨김 */
-#upload{display:none}
-
+.story-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid #ddd}.story-head h3{margin:0;font-size:22px;font-weight:900}.story-close{border:0;background:#eee;border-radius:999px;width:38px;height:38px;font-size:22px;cursor:pointer}
+.story-body{padding:22px 24px}.story-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}.story-tabs button{border:0;border-radius:8px;padding:12px 20px;font-weight:900;cursor:pointer;background:#e5e7eb;color:#222}.story-tabs button.active{background:#6d4cff;color:#fff}
+.story-panel,.story-write-box{border:1px solid #ddd;padding:22px;background:#fff}.story-write-box{display:none}.story-notice{background:#fff1c7;color:#8a5a00;border-radius:8px;padding:13px 14px;margin-bottom:18px;font-size:14px}.story-item{padding:14px 0;border-bottom:1px solid #ddd}.story-item-title{font-weight:900;font-size:16px;margin-bottom:8px}.story-item-meta{font-size:14px;color:#667085}
+footer{text-align:center;padding:32px;color:#777}
 @media(max-width:900px){.city-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}}
-
-/* 모바일 화면 최적화 수정본
-   - 모바일에서 카드가 너무 크게 보이는 문제 해결
-   - 정읍문화소식처럼 한 화면에 여러 문화소식이 보이도록 2열 카드 구성
-   - 이미지 비율과 글자 크기, 버튼 크기를 함께 축소 */
 @media(max-width:560px){
-  .wrap{width:min(100% - 16px)}
-
-  .topbar{
-    align-items:flex-start;
-    flex-direction:column;
-    padding:10px 0;
-  }
-
-  .brand strong{
-    font-size:21px;
-    line-height:1.2;
-  }
-
-  .brand span{
-    font-size:12px;
-  }
-
-  .menu{
-    width:100%;
-    margin-top:10px;
-    gap:6px;
-  }
-
-  .menu button{
-    padding:8px 12px;
-    font-size:13px;
-  }
-
-  .hero{
-    padding:12px 0 8px;
-  }
-
-  .hero-box{
-    height:180px;
-    border-radius:18px;
-  }
-
-  .hero-text h1{
-    font-size:26px;
-    line-height:1.2;
-  }
-
-  .hero-text p{
-    font-size:13px;
-  }
-
-  .city-picker{
-    padding:12px;
-    margin:10px auto 14px;
-    border-radius:16px;
-  }
-
-  .city-picker h2{
-    font-size:18px;
-  }
-
-  .city-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:7px;
-  }
-
-  .city-btn{
-    height:48px;
-    border-radius:12px;
-  }
-
-  .section-title{
-    font-size:21px;
-    margin:18px 0 12px;
-  }
-
-  .ai-search{
-    padding:12px;
-    margin-bottom:12px;
-    border-radius:14px;
-  }
-
-  .search-row{
-    grid-template-columns:1fr 74px;
-    gap:6px;
-  }
-
-  .search-row input{
-    padding:10px;
-    font-size:13px;
-  }
-
-  .search-row button{
-    font-size:13px;
-  }
-
-  .cards{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
-
-  .card{
-    padding:7px;
-    border-radius:12px;
-  }
-
-  .thumb{
-    aspect-ratio:1/1.15;
-    border-radius:10px;
-  }
-
-  .badge{
-    top:6px;
-    left:6px;
-    padding:4px 7px;
-    font-size:10px;
-  }
-
-  .meta{
-    padding:7px 1px 0;
-  }
-
-  .meta .date{
-    font-size:11px;
-  }
-
-  .meta .title{
-    font-size:13px;
-    line-height:1.3;
-    margin:4px 0;
-  }
-
-  .meta .place{
-    font-size:11px;
-    line-height:1.3;
-  }
-
-  .stat-row{
-    gap:4px;
-    font-size:11px;
-    margin-top:5px;
-  }
-
-  .actions{
-    gap:4px;
-    margin-top:7px;
-  }
-
-  .actions button{
-    padding:6px 3px;
-    font-size:11px;
-    border-radius:7px;
-  }
-
-  .upload-box,
-  .notice{
-    padding:14px;
-    border-radius:16px;
-  }
-
-  .modal-bg{
-    padding:64px 10px 20px;
-  }
-
-  .modal{
-    padding:16px;
-    border-radius:16px;
-  }
-
-  .modal img{
-    max-height:45vh;
-  }
+  .wrap{width:min(100% - 16px)}.topbar{align-items:flex-start;flex-direction:column;padding:10px 0}.brand strong{font-size:21px}.brand span{font-size:12px}.menu{width:100%;margin-top:10px;gap:6px}.menu button{padding:8px 12px;font-size:13px}
+  .hero{padding:12px 0 8px}.hero-box{height:180px;border-radius:18px}.hero-text h1{font-size:26px;line-height:1.2}.hero-text p{font-size:13px}
+  .city-picker{padding:12px;margin:10px auto 14px;border-radius:16px}.city-picker h2{font-size:18px}.city-grid{grid-template-columns:repeat(2,1fr);gap:7px}.city-btn{height:48px;border-radius:12px}
+  .section-title{font-size:21px;margin:18px 0 12px}.city-action-bar{padding:12px}.city-upload-btn{width:100%;padding:12px}
+  .ai-search{padding:12px;margin-bottom:12px;border-radius:14px}.search-row{grid-template-columns:1fr 74px;gap:6px}.search-row input{padding:10px;font-size:13px}.search-row button{font-size:13px}
+  .cards{grid-template-columns:repeat(2,1fr);gap:10px}.card{padding:7px;border-radius:12px}.thumb{aspect-ratio:1/1.15;border-radius:10px}.badge{top:6px;left:6px;padding:4px 7px;font-size:10px}
+  .meta{padding:7px 1px 0}.meta .date{font-size:11px}.meta .title{font-size:13px;line-height:1.3;margin:4px 0}.meta .place{font-size:11px;line-height:1.3}.stat-row{gap:4px;font-size:11px;margin-top:5px}.actions{gap:4px;margin-top:7px}.actions button{padding:6px 3px;font-size:11px;border-radius:7px}
+  .upload-box,.notice{padding:14px;border-radius:16px}.modal-bg{padding:64px 10px 20px}.modal{padding:16px;border-radius:16px}.modal img{max-height:45vh}
 }
 </style>
 </head>
-
 <body>
-
 <header>
   <div class="wrap topbar">
     <a class="brand" href="#" onclick="goHome()">
       <strong id="brandTitle">전북특별자치도 문화예술소식</strong>
       <span id="brandSub">14개 시·군 문화소식 통합 플랫폼</span>
     </a>
-  <nav class="menu">
-  <button onclick="goHome()">홈</button>
-  <button onclick="openCultureStoryModal()">문화이야기</button>
-  <button onclick="scrollUpload()">소식올리기</button>
-</nav>
+    <nav class="menu">
+      <button onclick="goHome()">홈</button>
+      <button onclick="openCultureStoryModal()">문화이야기</button>
+      <button onclick="scrollUpload()">소식올리기</button>
+    </nav>
   </div>
 </header>
 
 <main id="top">
 <section class="hero wrap">
   <div class="hero-box">
-   <img id="heroImg" src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1600&q=80">
-    <div class="hero-text">
-      <div>
-        <h1 id="heroTitle">전북특별자치도문화예술소식</h1>
-        <p id="heroDesc">14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.</p>
-      </div>
-    </div>
+    <img id="heroImg" src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1600&q=80">
+    <div class="hero-text"><div><h1 id="heroTitle">전북특별자치도문화예술소식</h1><p id="heroDesc">14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.</p></div></div>
   </div>
 </section>
 
@@ -355,6 +120,18 @@ footer{text-align:center;padding:32px;color:#777}
 
 <section class="wrap" id="board">
   <h2 class="section-title" id="boardTitle">전북 가까운 날짜순 문화소식</h2>
+
+  <!-- 시·군 클릭 후 바로 보이는 소식올리기 단추 -->
+  <div class="city-action-bar" id="cityActionBar">
+    <div class="city-action-inner">
+      <div>
+        <div class="city-action-title" id="cityActionTitle">선택한 지역 문화소식</div>
+        <div class="city-action-desc" id="cityActionDesc">이 지역의 소식을 바로 올릴 수 있습니다.</div>
+      </div>
+      <button class="city-upload-btn" id="cityUploadButton" onclick="scrollUpload()">+ 소식올리기</button>
+    </div>
+  </div>
+
   <div class="ai-search">
     <strong id="searchTitle">전북 문화소식 검색</strong>
     <p style="color:#777;margin:6px 0 12px" id="searchDesc">지역 행사, 전시, 공연, 축제를 검색합니다.</p>
@@ -370,40 +147,13 @@ footer{text-align:center;padding:32px;color:#777}
   <h3 id="uploadTitle">문화소식 올리기</h3>
   <p id="uploadDesc">이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.</p>
   <div class="form-grid">
-    <div class="field">
-      <label>분류</label>
-      <select id="postType">
-        <option>행사·축제</option>
-        <option>전시·공연</option>
-        <option>문화유산</option>
-        <option>교육·체험</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>행사 제목</label>
-      <input id="postTitle" placeholder="예: 봄 문화예술제">
-    </div>
-    <div class="field">
-      <label>시작 날짜</label>
-      <input id="postStart" type="date">
-    </div>
-    <div class="field">
-      <label>종료 날짜</label>
-      <input id="postEnd" type="date">
-    </div>
-    <div class="field">
-      <label>장소</label>
-      <input id="postPlace" placeholder="예: 문화예술회관">
-    </div>
-    <div class="field">
-      <label>이미지</label>
-      <input id="postImage" type="file" accept="image/*" onchange="previewImage(event)">
-      <div class="preview" id="imagePreview"></div>
-    </div>
-    <div class="field full">
-      <label>설명</label>
-      <textarea id="postText" placeholder="행사 내용, 시간, 참여 방법 등을 입력하세요."></textarea>
-    </div>
+    <div class="field"><label>분류</label><select id="postType"><option>행사·축제</option><option>전시·공연</option><option>문화유산</option><option>교육·체험</option></select></div>
+    <div class="field"><label>행사 제목</label><input id="postTitle" placeholder="예: 봄 문화예술제"></div>
+    <div class="field"><label>시작 날짜</label><input id="postStart" type="date"></div>
+    <div class="field"><label>종료 날짜</label><input id="postEnd" type="date"></div>
+    <div class="field"><label>장소</label><input id="postPlace" placeholder="예: 문화예술회관"></div>
+    <div class="field"><label>이미지</label><input id="postImage" type="file" accept="image/*" onchange="previewImage(event)"><div class="preview" id="imagePreview"></div></div>
+    <div class="field full"><label>설명</label><textarea id="postText" placeholder="행사 내용, 시간, 참여 방법 등을 입력하세요."></textarea></div>
   </div>
   <button class="submit" onclick="addPost()">게시글 등록</button>
   <button class="reset" onclick="resetForm()">다시쓰기</button>
@@ -416,93 +166,25 @@ footer{text-align:center;padding:32px;color:#777}
 </section>
 </main>
 
-<div class="modal-bg" id="modalBg">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modalTitle">상세보기</h3>
-      <button class="close" onclick="closeModal()">✕</button>
-    </div>
-    <div id="modalBody"></div>
-  </div>
-</div>
-
-
+<div class="modal-bg" id="modalBg"><div class="modal"><div class="modal-head"><h3 id="modalTitle">상세보기</h3><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
 
 <div class="story-modal-bg" id="cultureStoryModal">
-  <div class="story-modal">
-    <div class="story-head">
-      <h3>문화이야기</h3>
-      <button class="story-close" onclick="closeCultureStoryModal()">×</button>
-    </div>
+  <div class="story-modal"><div class="story-head"><h3>문화이야기</h3><button class="story-close" onclick="closeCultureStoryModal()">×</button></div>
     <div class="story-body">
-      <div class="story-tabs">
-        <button id="storyListTab" class="active" onclick="showCultureStoryList()">게시글 보기</button>
-        <button id="storyWriteTab" onclick="showCultureStoryWrite()">글 쓰기</button>
-      </div>
-      <div class="story-panel" id="cultureStoryListBox">
-        <h4>전체 게시글 목록</h4>
-        <div class="story-notice">공고: 타행사 홍보, 비방글, 부적절한 게시글은 관리자에 의해 삭제됩니다.</div>
-        <div id="cultureStoryList"></div>
-      </div>
-      <div class="story-write-box" id="cultureStoryWriteBox">
-        <h4>문화이야기 글 쓰기</h4>
-        <input id="storyTitleInput" placeholder="제목을 입력하세요">
-        <input id="storyWriterInput" placeholder="작성자 이름">
-        <textarea id="storyTextInput" placeholder="문화 이야기 내용을 입력하세요." style="height:140px"></textarea>
-        <div class="story-write-actions">
-          <button class="story-save" onclick="addCultureStory()">등록하기</button>
-          <button class="story-cancel" onclick="showCultureStoryList()">목록으로</button>
-        </div>
-      </div>
+      <div class="story-tabs"><button id="storyListTab" class="active" onclick="showCultureStoryList()">게시글 보기</button><button id="storyWriteTab" onclick="showCultureStoryWrite()">글 쓰기</button></div>
+      <div class="story-panel" id="cultureStoryListBox"><h4>전체 게시글 목록</h4><div class="story-notice">공고: 타행사 홍보, 비방글, 부적절한 게시글은 관리자에 의해 삭제됩니다.</div><div id="cultureStoryList"></div></div>
+      <div class="story-write-box" id="cultureStoryWriteBox"><h4>문화이야기 글 쓰기</h4><input id="storyTitleInput" placeholder="제목을 입력하세요"><input id="storyWriterInput" placeholder="작성자 이름"><textarea id="storyTextInput" placeholder="문화 이야기 내용을 입력하세요." style="height:140px"></textarea><div class="story-write-actions"><button class="submit" onclick="addCultureStory()">등록하기</button><button class="reset" onclick="showCultureStoryList()">목록으로</button></div></div>
     </div>
   </div>
 </div>
 
-<div class="share-layer" id="shareLayer">
-  <div class="share-box">
-    <h3>공유하기</h3>
-    <div class="share-preview" id="sharePreview"></div>
-    <div class="share-options">
-      <button class="share-kakao" onclick="shareToKakao()">카카오톡 공유</button>
-      <button class="share-facebook" onclick="shareToFacebook()">페이스북 공유</button>
-      <button class="share-instagram" onclick="shareToInstagram()">인스타그램용 문구 복사</button>
-      <button class="share-close" onclick="closeShareLayer()">닫기</button>
-    </div>
-  </div>
+<footer><span id="footerText">전북문화예술소식 · 14개 시·군 통합 문화플랫폼</span></footer>
+
+<div style="position:fixed;bottom:12px;right:12px;z-index:99999;display:flex;gap:6px;opacity:1">
+  <button onclick="goHome()" style="border:0;background:#111;color:white;padding:7px 11px;border-radius:8px;font-size:12px;cursor:pointer">홈화면</button>
+  <button onclick="adminLogin()" style="border:0;background:#6d4cff;color:white;padding:7px 11px;border-radius:8px;font-size:12px;cursor:pointer">관리자</button>
 </div>
 
-<footer>
-  <span id="footerText">전북문화예술소식 · 14개 시·군 통합 문화플랫폼</span>
-</footer>
-<div style="
-  position:fixed;
-  bottom:12px;
-  right:12px;
-  z-index:99999;
-  display:flex;
-  gap:6px;
-   opacity:1;
-">
-  <button onclick="goHome()" style="
-    border:0;
-    background:#111;
-    color:white;
-    padding:7px 11px;
-    border-radius:8px;
-    font-size:12px;
-    cursor:pointer;
-  ">홈화면</button>
-
-  <button onclick="adminLogin()" style="
-    border:0;
-    background:#6d4cff;
-    color:white;
-    padding:7px 11px;
-    border-radius:8px;
-    font-size:12px;
-    cursor:pointer;
-  ">관리자</button>
-</div>
 <script>
 const cityData={
 "전주시":{desc:"한옥·공연·예술이 살아있는 전주 문화소식",img:"images/jeonju.jpg"},
@@ -521,16 +203,11 @@ const cityData={
 "부안군":{desc:"변산반도와 해양문화의 부안 문화소식",img:"images/buan.jpg"}
 };
 
-let currentCity="전북";
-let uploadedImage="";
-let posts=[];
-let comments={};
-let isAdmin=false;
+let currentCity="전북", uploadedImage="", posts=[], comments={}, isAdmin=false;
 let cultureStories=[
   {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."},
-  {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."}
+  {title:"전북문화예술소식 안내",date:"2026.05.28(목)",writer:"관리자",text:"14개 시·군 문화소식을 함께 모아보는 공간입니다."}
 ];
-
 const sampleImages=[
 "https://images.unsplash.com/photo-1507878866276-a947ef722fee?auto=format&fit=crop&w=800&q=80",
 "https://images.unsplash.com/photo-1545987796-200677ee1011?auto=format&fit=crop&w=800&q=80"
@@ -541,84 +218,54 @@ function init(){
   Object.keys(cityData).forEach(city=>{
     grid.innerHTML+=`<button class="city-btn" onclick="openCity('${city}')" style="background-image:url('${cityData[city].img}')"><span>${city}</span></button>`;
   });
-
   Object.keys(cityData).forEach(city=>{
     posts.push(
       {id:makeId(),city,type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
       {id:makeId(),city,type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
     );
   });
-
   renderPosts();
+  renderCultureStories();
 }
 
-function makeId(){
-  return "post-"+Date.now()+"-"+Math.random().toString(36).slice(2,8);
-}
+function makeId(){ return "post-"+Date.now()+"-"+Math.random().toString(36).slice(2,8); }
 
 function goHome(){
   currentCity="전북";
-  setPage(
-    "전북문화예술소식",
-    "14개 시·군 문화소식 통합 플랫폼",
-    "전북문화예술소식",
-    "14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.",
-    "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80",
-    "전북 가까운 날짜순 문화소식",
-    "문화소식 올리기",
-    "이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.",
-    "전북문화예술소식 · 14개 시·군 통합 문화플랫폼"
-  );
+  setPage("전북문화예술소식","14개 시·군 문화소식 통합 플랫폼","전북문화예술소식","14개 시·군의 행사·전시·공연·문화 이야기를 한곳에서 만나보세요.","https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80","전북 가까운 날짜순 문화소식","문화소식 올리기","이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.","전북문화예술소식 · 14개 시·군 통합 문화플랫폼");
   renderPosts();
-
-  const upload=document.getElementById("upload");
-  if(upload){
-    upload.style.display="none";
-  }
-
+  hideUpload();
+  hideCityActionBar();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function openCity(city){
   if (city === "정읍시") {
-  window.location.href = "https://www.jeongeup-art.com";
-  return;
-}
+    window.location.href = "https://www.jeongeup-art.com";
+    return;
+  }
   currentCity=city;
   const data=cityData[city];
-
-  setPage(
-    `${city}문화소식`,
-    `${city} 행사·전시·공연 시민참여 문화플랫폼`,
-    `${city}문화소식`,
-    `${data.desc} · 시민이 직접 올리고 함께 보는 문화소식`,
-    data.img,
-    `${city} 가까운 날짜순 문화소식`,
-    `${city} 소식올리기`,
-    `${city}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`,
-    `${city}문화소식 · 시민참여 문화플랫폼`
-  );
-
+  setPage(`${city}문화소식`,`${city} 행사·전시·공연 시민참여 문화플랫폼`,`${city}문화소식`,`${data.desc} · 시민이 직접 올리고 함께 보는 문화소식`,data.img,`${city} 가까운 날짜순 문화소식`,`${city} 소식올리기`,`${city}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`,`${city}문화소식 · 시민참여 문화플랫폼`);
   document.getElementById("searchTitle").innerText=`${city} 문화소식 검색`;
   document.getElementById("searchDesc").innerText=`${city}의 축제, 전시, 공연, 체험 등 문화행사를 검색합니다.`;
   document.getElementById("noticeTitle").innerText=`${city} 공지사항 미리보기`;
-
   renderPosts();
-
-  const upload=document.getElementById("upload");
-  if(upload){
-    upload.style.display="none";
-  }
-
-  // 시·군을 선택하면 상단으로 가지 않고
-  // 해당 시·군의 가까운 날짜순 문화소식 목록으로 바로 이동합니다.
-  setTimeout(()=>{
-    document.getElementById("board").scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-  },100);
+  showCityActionBar(city);
+  hideUpload();
+  setTimeout(()=>document.getElementById("board").scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
+
+function showCityActionBar(city){
+  const bar=document.getElementById("cityActionBar");
+  document.getElementById("cityActionTitle").innerText=`${city} 가까운 문화소식창`;
+  document.getElementById("cityActionDesc").innerText=`${city} 소식창에서 바로 소식을 올릴 수 있습니다.`;
+  document.getElementById("cityUploadButton").innerText=`+ ${city} 소식올리기`;
+  bar.style.display="block";
+}
+
+function hideCityActionBar(){ document.getElementById("cityActionBar").style.display="none"; }
+function hideUpload(){ document.getElementById("upload").style.display="none"; }
 
 function setPage(brand,sub,hero,desc,img,board,upload,uploadDesc,footer){
   document.getElementById("brandTitle").innerText=brand;
@@ -636,489 +283,83 @@ function renderPosts(){
   const grid=document.getElementById("eventGrid");
   let list=currentCity==="전북"?posts:posts.filter(p=>p.city===currentCity);
   list=list.sort((a,b)=>new Date(a.start)-new Date(b.start)).slice(0,8);
-
   grid.innerHTML=list.map(p=>`
     <div class="card">
-      <div class="thumb" onclick="showDetail('${p.id}')">
-        <span class="badge">${p.type}</span>
-        <img src="${p.image}">
-      </div>
-      <div class="meta">
-        <div class="date">${p.start} ~ ${p.end}</div>
-        <div class="title">${p.title}</div>
-        <div class="place">📍 ${p.place}</div>
-        <div class="stat-row">👁 ${p.views||0} · ❤️ ${p.likes||0} · 💬 ${(comments[p.id]||[]).length}</div>
-      </div>
-      <div class="actions">
-        <button onclick="showDetail('${p.id}')">자세히</button>
-        <button onclick="likePost('${p.id}')">좋아요</button>
-        <button onclick="sharePost('${p.id}')">공유</button>
-        ${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">삭제</button>` : ""}
-      </div>
-    </div>
-  `).join("");
+      <div class="thumb" onclick="showDetail('${p.id}')"><span class="badge">${p.type}</span><img src="${p.image}" alt="${escapeHtml(p.title)}"></div>
+      <div class="meta"><div class="date">${p.start} ~ ${p.end}</div><div class="title">${escapeHtml(p.title)}</div><div class="place">📍 ${escapeHtml(p.place)}</div><div class="stat-row">👁 ${p.views||0} · ❤️ ${p.likes||0} · 💬 ${(comments[p.id]||[]).length}</div></div>
+      <div class="actions"><button onclick="showDetail('${p.id}')">자세히</button><button onclick="likePost('${p.id}')">좋아요</button><button onclick="sharePost('${p.id}')">공유</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">삭제</button>` : ""}</div>
+    </div>`).join("");
 }
 
 function previewImage(event){
-  const file=event.target.files[0];
-  const preview=document.getElementById("imagePreview");
-
-  if(!file){
-    uploadedImage="";
-    preview.innerHTML="";
-    return;
-  }
-
+  const file=event.target.files[0], preview=document.getElementById("imagePreview");
+  if(!file){ uploadedImage=""; preview.innerHTML=""; return; }
   const reader=new FileReader();
-  reader.onload=e=>{
-    uploadedImage=e.target.result;
-    preview.innerHTML=`<img src="${uploadedImage}">`;
-  };
+  reader.onload=e=>{ uploadedImage=e.target.result; preview.innerHTML=`<img src="${uploadedImage}">`; };
   reader.readAsDataURL(file);
 }
 
 function addPost(){
-  if(currentCity==="전북"){
-    alert("먼저 전주시, 정읍시 등 시·군을 선택한 뒤 소식을 올려주세요.");
-    return;
-  }
-
+  if(currentCity==="전북"){ alert("먼저 전주시, 익산시 등 시·군을 선택한 뒤 소식을 올려주세요."); return; }
   const title=document.getElementById("postTitle").value.trim();
-
-  if(!title){
-    alert("행사 제목을 입력해주세요.");
-    return;
-  }
-
+  if(!title){ alert("행사 제목을 입력해주세요."); return; }
   const id=makeId();
-
-  posts.unshift({
-    id,
-    city:currentCity,
-    type:document.getElementById("postType").value,
-    title,
-    start:document.getElementById("postStart").value||"날짜 미입력",
-    end:document.getElementById("postEnd").value||"날짜 미입력",
-    place:document.getElementById("postPlace").value||"장소 미입력",
-    text:document.getElementById("postText").value||"",
-    image:uploadedImage||cityData[currentCity].img,
-    likes:0,
-    views:0
-  });
-
+  posts.unshift({id,city:currentCity,type:document.getElementById("postType").value,title,start:document.getElementById("postStart").value||"날짜 미입력",end:document.getElementById("postEnd").value||"날짜 미입력",place:document.getElementById("postPlace").value||"장소 미입력",text:document.getElementById("postText").value||"",image:uploadedImage||cityData[currentCity].img,likes:0,views:0});
   comments[id]=[];
-
-  resetForm();
-  renderPosts();
-  scrollBoard();
-  alert(`${currentCity} 문화소식이 등록되었습니다.`);
+  resetForm(); renderPosts(); scrollBoard(); alert(`${currentCity} 문화소식이 등록되었습니다.`);
 }
 
 function resetForm(){
-  document.getElementById("postTitle").value="";
-  document.getElementById("postStart").value="";
-  document.getElementById("postEnd").value="";
-  document.getElementById("postPlace").value="";
-  document.getElementById("postText").value="";
-  document.getElementById("postImage").value="";
-  document.getElementById("imagePreview").innerHTML="";
-  uploadedImage="";
+  ["postTitle","postStart","postEnd","postPlace","postText","postImage"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("imagePreview").innerHTML=""; uploadedImage="";
 }
 
 function showDetail(id){
-  const p=posts.find(x=>x.id===id);
-  if(!p)return;
-
-  p.views=(p.views||0)+1;
-  if(!comments[id]) comments[id]=[];
-
-  renderPosts();
-
+  const p=posts.find(x=>x.id===id); if(!p)return;
+  p.views=(p.views||0)+1; if(!comments[id]) comments[id]=[]; renderPosts();
   document.getElementById("modalTitle").innerText=p.title;
-
   document.getElementById("modalBody").innerHTML=`
     <img src="${p.image}">
-
-    <div class="detail-meta">
-      <p><b>지역:</b> ${p.city}</p>
-      <p><b>분류:</b> ${p.type}</p>
-      <p><b>기간:</b> ${p.start} ~ ${p.end}</p>
-      <p><b>장소:</b> ${p.place}</p>
-      <p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0} · <b>댓글:</b> ${(comments[p.id]||[]).length}</p>
-    </div>
-
-    <p style="line-height:1.7;white-space:pre-wrap">${p.text||"등록된 설명이 없습니다."}</p>
-
-    <div class="detail-actions">
-      <button class="like-btn" onclick="likePost('${p.id}'); showDetail('${p.id}')">❤️ 좋아요</button>
-      <button class="share-btn" onclick="sharePost('${p.id}')">공유하기</button>
-      <button class="copy-btn" onclick="copyPostText('${p.id}')">내용 복사</button>
-      ${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">관리자 삭제</button>` : ""}
-    </div>
-
-    <div class="comment-box">
-      <h4 style="margin:0 0 10px;">댓글</h4>
-
-      <input id="commentName" placeholder="이름" style="margin-bottom:8px;">
-      <textarea id="commentText" placeholder="댓글을 입력하세요" style="height:90px;"></textarea>
-
-      <button class="submit" onclick="addComment('${p.id}')">댓글 등록</button>
-
-      <div id="commentList" style="margin-top:14px;">
-        ${renderComments(p.id)}
-      </div>
-    </div>
-  `;
-
+    <div class="detail-meta"><p><b>지역:</b> ${p.city}</p><p><b>분류:</b> ${p.type}</p><p><b>기간:</b> ${p.start} ~ ${p.end}</p><p><b>장소:</b> ${p.place}</p><p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0} · <b>댓글:</b> ${(comments[p.id]||[]).length}</p></div>
+    <p style="line-height:1.7;white-space:pre-wrap">${escapeHtml(p.text||"등록된 설명이 없습니다.")}</p>
+    <div class="detail-actions"><button class="like-btn" onclick="likePost('${p.id}'); showDetail('${p.id}')">❤️ 좋아요</button><button class="share-btn" onclick="sharePost('${p.id}')">공유하기</button><button class="copy-btn" onclick="copyPostText('${p.id}')">내용 복사</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">관리자 삭제</button>` : ""}</div>
+    <div class="comment-box"><h4 style="margin:0 0 10px;">댓글</h4><div id="commentList">${(comments[p.id]||[]).map(c=>`<div class="comment-item"><b>${escapeHtml(c.name)}</b>${escapeHtml(c.text)}</div>`).join("")||"댓글이 없습니다."}</div><input id="commentName" placeholder="이름"><textarea id="commentText" placeholder="댓글 내용"></textarea><button class="submit" onclick="addComment('${p.id}')">댓글 등록</button></div>`;
   document.getElementById("modalBg").classList.add("show");
 }
 
-function renderComments(id){
-  if(!comments[id] || comments[id].length===0){
-    return `<p style="color:#777;">댓글이 없습니다.</p>`;
-  }
-
-  return comments[id].map(c=>`
-    <div class="comment-item">
-      <b>${escapeHtml(c.name)}</b>
-      <p style="margin:6px 0 0;white-space:pre-wrap;">${escapeHtml(c.text)}</p>
-    </div>
-  `).join("");
-}
-
-function addComment(id){
-  const name=document.getElementById("commentName").value.trim();
-  const text=document.getElementById("commentText").value.trim();
-
-  if(!name || !text){
-    alert("이름과 댓글을 입력해주세요.");
-    return;
-  }
-
-  if(!comments[id]) comments[id]=[];
-  comments[id].unshift({name,text});
-
-  document.getElementById("commentName").value="";
-  document.getElementById("commentText").value="";
-  document.getElementById("commentList").innerHTML=renderComments(id);
-
-  renderPosts();
-}
-
-function closeModal(){
-  document.getElementById("modalBg").classList.remove("show");
-}
-
-function likePost(id){
-  const p=posts.find(x=>x.id===id);
-  if(!p)return;
-
-  p.likes=(p.likes||0)+1;
-  renderPosts();
-}
-
-let currentShareData=null;
-
-/* =========================================================
-   공유 기능 핵심 수정본
-   - 카카오톡: 이미지 + 제목 + 설명 + 사이트 주소가 카드 형태로 공유됩니다.
-   - 페이스북: 현재 게시글 주소로 공유됩니다.
-   - 인스타그램: 인스타는 직접 링크 공유 API가 제한되어 문구+주소를 복사합니다.
-
-   중요:
-   1) 카카오톡 카드 이미지는 https:// 로 시작하는 이미지가 가장 안정적입니다.
-   2) 사용자가 직접 올린 Base64 이미지는 카카오톡 카드 이미지로 안 뜰 수 있어
-      그 경우 전북문화 대표 이미지를 대신 사용하도록 안전장치를 넣었습니다.
-   3) 카카오톡 JS 공유를 쓰려면 아래 KAKAO_APP_KEY에 본인 JavaScript 키를 넣으세요.
-      키가 없으면 문구와 주소 복사 방식으로 작동합니다.
-   ========================================================= */
-const SITE_HOME_URL = "https://nockd61-sudo.github.io/jb-culture/";
-const DEFAULT_SHARE_IMAGE = "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80";
-const KAKAO_APP_KEY = ""; // 예: "1234567890abcdef"  ← 카카오 JavaScript 키가 있으면 여기에 넣으세요.
-
-function initKakaoShare(){
-  try{
-    if(!window.Kakao) return false;
-    if(Kakao.isInitialized && Kakao.isInitialized()) return true;
-    if(KAKAO_APP_KEY && KAKAO_APP_KEY.trim()){
-      Kakao.init(KAKAO_APP_KEY.trim());
-      return Kakao.isInitialized();
-    }
-  }catch(e){
-    console.warn("Kakao init error", e);
-  }
-  return false;
-}
-
-function getBaseUrl(){
-  const path = location.pathname.endsWith("/") ? location.pathname : location.pathname.replace(/[^/]*$/, "");
-  return location.origin + path;
-}
-
-function getShareUrl(id){
-  return getBaseUrl() + "?post=" + encodeURIComponent(id);
-}
-
-function getSafeShareImage(image){
-  if(!image) return DEFAULT_SHARE_IMAGE;
-  if(image.startsWith("https://")) return image;
-  if(image.startsWith("http://")) return image.replace("http://", "https://");
-  return DEFAULT_SHARE_IMAGE;
-}
-
-function sharePost(id){
-  const p=posts.find(x=>x.id===id);
-  if(!p)return;
-
-  const safeImage=getSafeShareImage(p.image);
-
-  currentShareData={
-    id,
-    title:`[${p.city}문화소식] ${p.title}`,
-    description:`${p.city} 문화소식 · ${p.start} ~ ${p.end} · ${p.place}`,
-    text:`${p.title}
-${p.city} 문화소식
-기간: ${p.start} ~ ${p.end}
-장소: ${p.place}`,
-    url:getShareUrl(id),
-    image:safeImage
-  };
-
-  document.getElementById("sharePreview").innerHTML=`
-    <img src="${currentShareData.image}" alt="공유 이미지">
-    <div>
-      <b>${escapeHtml(currentShareData.title)}</b>
-      <p style="font-size:13px;color:#666;margin:4px 0 6px;line-height:1.45;">${escapeHtml(currentShareData.description)}</p>
-      <span>${escapeHtml(currentShareData.url)}</span>
-    </div>
-  `;
-
-  document.getElementById("shareLayer").classList.add("show");
-}
-
-function closeShareLayer(){
-  document.getElementById("shareLayer").classList.remove("show");
-}
-
-function shareToKakao(){
-  if(!currentShareData)return;
-
-  const kakaoReady=initKakaoShare();
-
-  try{
-    if(kakaoReady && window.Kakao && Kakao.Share){
-      Kakao.Share.sendDefault({
-        objectType:"feed",
-        content:{
-          title:currentShareData.title,
-          description:currentShareData.description,
-          imageUrl:currentShareData.image,
-          link:{
-            mobileWebUrl:currentShareData.url,
-            webUrl:currentShareData.url
-          }
-        },
-        buttons:[{
-          title:"사이트에서 확인하기",
-          link:{
-            mobileWebUrl:currentShareData.url,
-            webUrl:currentShareData.url
-          }
-        }]
-      });
-      return;
-    }
-  }catch(e){
-    console.warn("Kakao share error", e);
-  }
-
-  copyShareText("카카오톡에 붙여넣을 공유 문구와 주소를 복사했습니다. 카카오 JavaScript 키를 넣으면 이미지 카드형 공유가 바로 작동합니다.");
-}
-
-function shareToFacebook(){
-  if(!currentShareData)return;
-  window.open(
-    "https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(currentShareData.url),
-    "_blank",
-    "width=650,height=650"
-  );
-}
-
-function shareToInstagram(){
-  copyShareText("인스타그램에 붙여넣을 공유 문구와 주소를 복사했습니다.");
-}
-
-function copyShareText(message){
-  if(!currentShareData)return;
-  const text=currentShareData.text+"\n"+currentShareData.url;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(()=>alert(message));
-  }else{
-    prompt("아래 내용을 복사해주세요", text);
-  }
-}
-
-function copyPostText(id){
-  const p=posts.find(x=>x.id===id);
-  if(!p)return;
-
-  const text=`${p.title}
-지역: ${p.city}
-분류: ${p.type}
-기간: ${p.start} ~ ${p.end}
-장소: ${p.place}
-
-${p.text}`;
-
-  navigator.clipboard.writeText(text).then(()=>{
-    alert("내용이 복사되었습니다.");
-  });
-}
+function closeModal(){ document.getElementById("modalBg").classList.remove("show"); }
+function addComment(id){ const name=document.getElementById("commentName").value.trim()||"시민"; const text=document.getElementById("commentText").value.trim(); if(!text){alert("댓글 내용을 입력해주세요.");return;} comments[id].push({name,text}); showDetail(id); }
+function likePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; p.likes=(p.likes||0)+1; renderPosts(); }
+function sharePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`[${p.city}문화소식] ${p.title}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n${location.href}`; if(navigator.share){navigator.share({title:p.title,text}).catch(()=>{});} else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert("공유 문구가 복사되었습니다."));} else {prompt("아래 내용을 복사하세요", text);} }
+function copyPostText(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`${p.title}\n지역: ${p.city}\n분류: ${p.type}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n\n${p.text}`; navigator.clipboard.writeText(text).then(()=>alert("내용이 복사되었습니다.")); }
 
 function searchGoogle(){
-  const q=document.getElementById("searchInput").value.trim();
-  const region=currentCity==="전북"?"전북":currentCity;
-
-  if(!q){
-    alert("검색어를 입력해주세요.");
-    return;
-  }
-
-  window.open(
-    "https://www.google.com/search?q="+encodeURIComponent(region+" "+q+" 문화 행사 전시 공연 축제"),
-    "_blank"
-  );
+  const q=document.getElementById("searchInput").value.trim(), region=currentCity==="전북"?"전북":currentCity;
+  if(!q){ alert("검색어를 입력해주세요."); return; }
+  window.open("https://www.google.com/search?q="+encodeURIComponent(region+" "+q+" 문화 행사 전시 공연 축제"),"_blank");
 }
-
-
-function openCultureStoryModal(){
-  renderCultureStoryList();
-  showCultureStoryList();
-  document.getElementById("cultureStoryModal").classList.add("show");
-}
-
-function closeCultureStoryModal(){
-  document.getElementById("cultureStoryModal").classList.remove("show");
-}
-
-function showCultureStoryList(){
-  document.getElementById("cultureStoryListBox").style.display="block";
-  document.getElementById("cultureStoryWriteBox").style.display="none";
-  document.getElementById("storyListTab").classList.add("active");
-  document.getElementById("storyWriteTab").classList.remove("active");
-  renderCultureStoryList();
-}
-
-function showCultureStoryWrite(){
-  document.getElementById("cultureStoryListBox").style.display="none";
-  document.getElementById("cultureStoryWriteBox").style.display="block";
-  document.getElementById("storyListTab").classList.remove("active");
-  document.getElementById("storyWriteTab").classList.add("active");
-}
-
-function renderCultureStoryList(){
-  const list=document.getElementById("cultureStoryList");
-  if(!list) return;
-  list.innerHTML=cultureStories.map(item=>`
-    <div class="story-item">
-      <div class="story-item-title">${escapeHtml(item.title)}</div>
-      <div class="story-item-meta">${escapeHtml(item.date)} · ${escapeHtml(item.writer)}</div>
-    </div>
-  `).join("");
-}
-
-function addCultureStory(){
-  const title=document.getElementById("storyTitleInput").value.trim();
-  const writer=document.getElementById("storyWriterInput").value.trim() || "시민";
-  const text=document.getElementById("storyTextInput").value.trim();
-
-  if(!title){
-    alert("제목을 입력해주세요.");
-    return;
-  }
-
-  const now=new Date();
-  const date=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,"0")}.${String(now.getDate()).padStart(2,"0")}`;
-  cultureStories.unshift({title,date,writer,text});
-
-  document.getElementById("storyTitleInput").value="";
-  document.getElementById("storyWriterInput").value="";
-  document.getElementById("storyTextInput").value="";
-
-  showCultureStoryList();
-  alert("문화이야기 글이 등록되었습니다.");
-}
-
-function scrollBoard(){
-  document.getElementById("board").scrollIntoView({behavior:"smooth"});
-}
-
+function scrollBoard(){ document.getElementById("board").scrollIntoView({behavior:"smooth"}); }
 function scrollUpload(){
+  if(currentCity==="전북"){ alert("먼저 14개 시·군 중 하나를 선택해주세요."); return; }
   const upload=document.getElementById("upload");
-  if(!upload) return;
-
-  if(upload.style.display==="block"){
-    upload.style.display="none";
-  }else{
-    upload.style.display="block";
-
-    setTimeout(()=>{
-      upload.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-    },100);
-  }
+  upload.style.display="block";
+  document.getElementById("uploadTitle").innerText=`${currentCity} 소식올리기`;
+  document.getElementById("uploadDesc").innerText=`${currentCity}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`;
+  upload.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function escapeHtml(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-function adminLogin(){
-  const pw = prompt("관리자 비밀번호를 입력하세요");
-  if(pw === "1234"){
-    isAdmin = true;
-    alert("관리자 모드가 켜졌습니다. 게시글 카드와 상세보기에서 삭제 버튼이 보입니다.");
-    renderPosts();
-  }else if(pw){
-    alert("비밀번호가 맞지 않습니다.");
-  }
-}
+function openCultureStoryModal(){ document.getElementById("cultureStoryModal").classList.add("show"); showCultureStoryList(); }
+function closeCultureStoryModal(){ document.getElementById("cultureStoryModal").classList.remove("show"); }
+function showCultureStoryList(){ document.getElementById("storyListTab").classList.add("active"); document.getElementById("storyWriteTab").classList.remove("active"); document.getElementById("cultureStoryListBox").style.display="block"; document.getElementById("cultureStoryWriteBox").style.display="none"; renderCultureStories(); }
+function showCultureStoryWrite(){ document.getElementById("storyListTab").classList.remove("active"); document.getElementById("storyWriteTab").classList.add("active"); document.getElementById("cultureStoryListBox").style.display="none"; document.getElementById("cultureStoryWriteBox").style.display="block"; }
+function renderCultureStories(){ const list=document.getElementById("cultureStoryList"); if(!list)return; list.innerHTML=cultureStories.map(s=>`<div class="story-item"><div class="story-item-title">${escapeHtml(s.title)}</div><div class="story-item-meta">${escapeHtml(s.date)} · ${escapeHtml(s.writer)}</div><p>${escapeHtml(s.text)}</p></div>`).join(""); }
+function addCultureStory(){ const title=document.getElementById("storyTitleInput").value.trim(), writer=document.getElementById("storyWriterInput").value.trim()||"시민", text=document.getElementById("storyTextInput").value.trim(); if(!title||!text){alert("제목과 내용을 입력해주세요.");return;} const d=new Date(); cultureStories.unshift({title,writer,text,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`}); document.getElementById("storyTitleInput").value=""; document.getElementById("storyWriterInput").value=""; document.getElementById("storyTextInput").value=""; showCultureStoryList(); }
 
-function deletePost(id){
-  if(!isAdmin){
-    alert("관리자 로그인 후 삭제할 수 있습니다.");
-    return;
-  }
+function adminLogin(){ const pw=prompt("관리자 비밀번호를 입력하세요"); if(pw==="1234"){isAdmin=true;alert("관리자 모드가 켜졌습니다.");renderPosts();} else if(pw){alert("비밀번호가 맞지 않습니다.");} }
+function deletePost(id){ if(!isAdmin){alert("관리자 로그인 후 삭제할 수 있습니다.");return;} const post=posts.find(p=>p.id===id); if(!post)return; if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`))return; posts=posts.filter(p=>p.id!==id); delete comments[id]; closeModal(); renderPosts(); alert("게시글이 삭제되었습니다."); }
+function escapeHtml(value){ return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
-  const post = posts.find(p => p.id === id);
-  if(!post) return;
-
-  if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`)) return;
-
-  posts = posts.filter(p => p.id !== id);
-  delete comments[id];
-
-  closeModal();
-  renderPosts();
-  alert("게시글이 삭제되었습니다.");
-}
-function openPostFromUrl(){
-  const params=new URLSearchParams(location.search);
-  const id=params.get("post");
-  if(!id)return;
-  setTimeout(()=>{
-    const found=posts.find(p=>p.id===id);
-    if(found) showDetail(id);
-  },300);
-}
 init();
-openPostFromUrl();
 </script>
 </body>
 </html>
