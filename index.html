@@ -57,13 +57,13 @@ header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-inde
 .stat-row{display:flex;gap:10px;font-size:12px;color:#777;margin-top:6px}
 .actions{display:flex;gap:6px;margin-top:10px}
 .actions button{flex:1;border:0;border-radius:8px;padding:8px;background:#888;color:#fff;font-weight:800;cursor:pointer}
-.actions button:nth-child(2){background:#ef4444}.actions button:last-child{background:#6d4cff}
+.actions button:nth-child(2){background:#ef4444}.actions button:last-child{background:#6d4cff}.actions .edit-btn{background:#10b981!important}.actions .share-card-btn{background:#6d4cff!important}.actions .like-card-btn{background:#ef4444!important}
 .upload-box{display:none;background:#fff;border:1px solid #ddd;border-radius:18px;padding:20px;margin:26px auto;box-shadow:0 10px 24px rgba(0,0,0,.06)}
 .upload-box h3{margin:0 0 8px;font-size:22px}.upload-box p{margin:0 0 15px;color:#777}
 .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field.full{grid-column:1/-1}
 label{font-weight:800;font-size:14px}input,textarea,select{width:100%;border:1px solid #ddd;border-radius:8px;padding:12px;margin-top:6px}
 textarea{height:110px;resize:vertical}.preview img{width:100%;max-height:260px;object-fit:contain;border-radius:12px;margin-top:10px;background:#eee}
-.submit,.reset{margin-top:14px;border:0;border-radius:10px;padding:13px 18px;font-weight:900;cursor:pointer}.submit{background:#6d4cff;color:#fff}.reset{background:#e5e7eb;color:#222}
+.submit,.reset{margin-top:14px;border:0;border-radius:10px;padding:13px 18px;font-weight:900;cursor:pointer}.submit{background:#6d4cff;color:#fff}.reset{background:#e5e7eb;color:#222}.edit-note{font-size:13px;color:#666;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px;margin:10px 0 0}
 .notice{background:#fff;border:1px solid #ddd;border-radius:18px;padding:20px;margin:20px auto;box-shadow:0 10px 24px rgba(0,0,0,.06)}
 .notice h3{margin:0 0 12px}.notice-item{border-bottom:1px dashed #ddd;padding:10px 0;font-weight:700}.notice-item:last-child{border-bottom:0}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;align-items:flex-start;justify-content:center;padding:80px 20px 30px;overflow:auto}.modal-bg.show{display:flex}
@@ -146,17 +146,20 @@ footer{text-align:center;padding:32px;color:#777}
 <section class="wrap upload-box" id="upload">
   <h3 id="uploadTitle">문화소식 올리기</h3>
   <p id="uploadDesc">이미지와 날짜를 입력하면 해당 시·군 문화소식 카드로 표시됩니다.</p>
+  <div class="edit-note">작성자가 나중에 수정할 수 있도록 <b>작성자 이름</b>과 <b>수정 비밀번호</b>를 입력해 주세요. 비밀번호는 화면에 공개되지 않습니다.</div>
   <div class="form-grid">
     <div class="field"><label>분류</label><select id="postType"><option>행사·축제</option><option>전시·공연</option><option>문화유산</option><option>교육·체험</option></select></div>
     <div class="field"><label>행사 제목</label><input id="postTitle" placeholder="예: 봄 문화예술제"></div>
+    <div class="field"><label>작성자 이름</label><input id="postWriter" placeholder="예: 김지호"></div>
+    <div class="field"><label>수정 비밀번호</label><input id="postPassword" type="password" placeholder="작성자 수정용 비밀번호"></div>
     <div class="field"><label>시작 날짜</label><input id="postStart" type="date"></div>
     <div class="field"><label>종료 날짜</label><input id="postEnd" type="date"></div>
     <div class="field"><label>장소</label><input id="postPlace" placeholder="예: 문화예술회관"></div>
     <div class="field"><label>이미지</label><input id="postImage" type="file" accept="image/*" onchange="previewImage(event)"><div class="preview" id="imagePreview"></div></div>
     <div class="field full"><label>설명</label><textarea id="postText" placeholder="행사 내용, 시간, 참여 방법 등을 입력하세요."></textarea></div>
   </div>
-  <button class="submit" onclick="addPost()">게시글 등록</button>
-  <button class="reset" onclick="resetForm()">다시쓰기</button>
+  <button class="submit" id="postSubmitButton" onclick="addPost()">게시글 등록</button>
+  <button class="reset" onclick="cancelEditOrReset()">다시쓰기</button>
 </section>
 
 <section class="wrap notice">
@@ -203,79 +206,27 @@ const cityData={
 "부안군":{desc:"변산반도와 해양문화의 부안 문화소식",img:"images/buan.jpg"}
 };
 
-let currentCity="전북", uploadedImage="", posts=[], comments={}, isAdmin=false;
+let currentCity="전북", uploadedImage="", posts=[], comments={}, isAdmin=false, editingPostId=null;
 let cultureStories=[
   {title:"정읍문화소식오픈",date:"2026.04.19(일)",writer:"시민",text:"정읍문화소식 오픈 안내입니다."},
   {title:"전북문화예술소식 안내",date:"2026.05.28(목)",writer:"관리자",text:"14개 시·군 문화소식을 함께 모아보는 공간입니다."}
 ];
-
-// ==============================
-// 브라우저 저장 기능(localStorage)
-// 새로고침해도 소식·댓글·좋아요·조회수가 유지됩니다.
-// 단, 같은 브라우저 기준 저장입니다. 모든 방문자가 함께 보려면 DB 연결이 필요합니다.
-// ==============================
-const STORAGE_KEYS={
-  posts:"jb_culture_posts_v1",
-  comments:"jb_culture_comments_v1",
-  stories:"jb_culture_stories_v1"
-};
-
-function loadSavedData(){
-  try{
-    const savedPosts=localStorage.getItem(STORAGE_KEYS.posts);
-    const savedComments=localStorage.getItem(STORAGE_KEYS.comments);
-    const savedStories=localStorage.getItem(STORAGE_KEYS.stories);
-
-    if(savedPosts) posts=JSON.parse(savedPosts)||[];
-    if(savedComments) comments=JSON.parse(savedComments)||{};
-    if(savedStories) cultureStories=JSON.parse(savedStories)||cultureStories;
-  }catch(err){
-    console.warn("저장된 데이터를 불러오지 못했습니다.", err);
-  }
-}
-
-function savePosts(){
-  try{
-    localStorage.setItem(STORAGE_KEYS.posts, JSON.stringify(posts));
-    localStorage.setItem(STORAGE_KEYS.comments, JSON.stringify(comments));
-  }catch(err){
-    alert("브라우저 저장공간이 부족하거나 저장이 차단되어 소식 저장에 실패했습니다.");
-    console.warn("소식 저장 실패", err);
-  }
-}
-
-function saveStories(){
-  try{
-    localStorage.setItem(STORAGE_KEYS.stories, JSON.stringify(cultureStories));
-  }catch(err){
-    console.warn("문화이야기 저장 실패", err);
-  }
-}
 const sampleImages=[
 "https://images.unsplash.com/photo-1507878866276-a947ef722fee?auto=format&fit=crop&w=800&q=80",
 "https://images.unsplash.com/photo-1545987796-200677ee1011?auto=format&fit=crop&w=800&q=80"
 ];
 
 function init(){
-  loadSavedData();
-
   const grid=document.getElementById("cityGrid");
   Object.keys(cityData).forEach(city=>{
     grid.innerHTML+=`<button class="city-btn" onclick="openCity('${city}')" style="background-image:url('${cityData[city].img}')"><span>${city}</span></button>`;
   });
-
-  // 저장된 게시글이 없을 때만 기본 샘플 게시글을 만듭니다.
-  // 저장된 글이 있는데 매번 샘플을 또 추가하면 새로고침 때마다 글이 중복됩니다.
-  if(posts.length===0){
-    Object.keys(cityData).forEach(city=>{
-      posts.push(
-        {id:makeId(),city,type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
-        {id:makeId(),city,type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
-      );
-    });
-    savePosts();
-  }
-
+  Object.keys(cityData).forEach(city=>{
+    posts.push(
+      {id:makeId(),city,writer:"관리자",password:"",type:"행사·축제",title:`${city} 대표 문화행사`,start:"2026-05-10",end:"2026-05-15",place:`${city} 주요 문화공간`,text:`${city}에서 열리는 시민 참여형 문화행사입니다.`,image:sampleImages[0],likes:0,views:0},
+      {id:makeId(),city,writer:"관리자",password:"",type:"전시·공연",title:`${city} 지역예술 전시·공연`,start:"2026-05-20",end:"2026-05-30",place:`${city} 문화예술회관`,text:`지역 예술가와 시민이 함께하는 전시·공연 소식입니다.`,image:sampleImages[1],likes:0,views:0}
+    );
+  });
   renderPosts();
   renderCultureStories();
 }
@@ -339,7 +290,7 @@ function renderPosts(){
     <div class="card">
       <div class="thumb" onclick="showDetail('${p.id}')"><span class="badge">${p.type}</span><img src="${p.image}" alt="${escapeHtml(p.title)}"></div>
       <div class="meta"><div class="date">${p.start} ~ ${p.end}</div><div class="title">${escapeHtml(p.title)}</div><div class="place">📍 ${escapeHtml(p.place)}</div><div class="stat-row">👁 ${p.views||0} · ❤️ ${p.likes||0} · 💬 ${(comments[p.id]||[]).length}</div></div>
-      <div class="actions"><button onclick="showDetail('${p.id}')">자세히</button><button onclick="likePost('${p.id}')">좋아요</button><button onclick="sharePost('${p.id}')">공유</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">삭제</button>` : ""}</div>
+      <div class="actions"><button onclick="showDetail('${p.id}')">자세히</button><button class="like-card-btn" onclick="likePost('${p.id}')">좋아요</button><button class="edit-btn" onclick="editPost('${p.id}')">수정</button><button class="share-card-btn" onclick="sharePost('${p.id}')">공유</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">삭제</button>` : ""}</div>
     </div>`).join("");
 }
 
@@ -355,42 +306,99 @@ function addPost(){
   if(currentCity==="전북"){ alert("먼저 전주시, 익산시 등 시·군을 선택한 뒤 소식을 올려주세요."); return; }
   const title=document.getElementById("postTitle").value.trim();
   if(!title){ alert("행사 제목을 입력해주세요."); return; }
+  const writer=document.getElementById("postWriter").value.trim()||"시민";
+  const password=document.getElementById("postPassword").value.trim();
+
+  if(editingPostId){
+    const p=posts.find(x=>x.id===editingPostId);
+    if(!p){ alert("수정할 게시글을 찾을 수 없습니다."); resetForm(); return; }
+    p.type=document.getElementById("postType").value;
+    p.title=title;
+    p.writer=writer;
+    if(password) p.password=password;
+    p.start=document.getElementById("postStart").value||"날짜 미입력";
+    p.end=document.getElementById("postEnd").value||"날짜 미입력";
+    p.place=document.getElementById("postPlace").value||"장소 미입력";
+    p.text=document.getElementById("postText").value||"";
+    if(uploadedImage) p.image=uploadedImage;
+    const updatedCity=p.city;
+    resetForm();
+    renderPosts();
+    scrollBoard();
+    alert(`${updatedCity} 문화소식이 수정되었습니다.`);
+    return;
+  }
+
+  if(!password){ alert("작성자가 나중에 수정할 수 있도록 수정 비밀번호를 입력해주세요."); return; }
   const id=makeId();
-  posts.unshift({id,city:currentCity,type:document.getElementById("postType").value,title,start:document.getElementById("postStart").value||"날짜 미입력",end:document.getElementById("postEnd").value||"날짜 미입력",place:document.getElementById("postPlace").value||"장소 미입력",text:document.getElementById("postText").value||"",image:uploadedImage||cityData[currentCity].img,likes:0,views:0});
+  posts.unshift({id,city:currentCity,writer,password,type:document.getElementById("postType").value,title,start:document.getElementById("postStart").value||"날짜 미입력",end:document.getElementById("postEnd").value||"날짜 미입력",place:document.getElementById("postPlace").value||"장소 미입력",text:document.getElementById("postText").value||"",image:uploadedImage||cityData[currentCity].img,likes:0,views:0});
   comments[id]=[];
-  savePosts();
-  resetForm(); renderPosts(); scrollBoard(); alert(`${currentCity} 문화소식이 등록되었습니다. 새로고침해도 유지됩니다.`);
+  resetForm(); renderPosts(); scrollBoard(); alert(`${currentCity} 문화소식이 등록되었습니다.`);
 }
 
 function resetForm(){
-  ["postTitle","postStart","postEnd","postPlace","postText","postImage"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("imagePreview").innerHTML=""; uploadedImage="";
+  ["postTitle","postWriter","postPassword","postStart","postEnd","postPlace","postText","postImage"].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=""; });
+  document.getElementById("postType").value="행사·축제";
+  document.getElementById("imagePreview").innerHTML=""; uploadedImage=""; editingPostId=null;
+  document.getElementById("postSubmitButton").innerText="게시글 등록";
+}
+
+function cancelEditOrReset(){
+  if(editingPostId && !confirm("수정을 취소하고 입력 내용을 지우시겠습니까?")) return;
+  resetForm();
+}
+
+function editPost(id){
+  const p=posts.find(x=>x.id===id); if(!p)return;
+  if(!isAdmin){
+    if(!p.password){ alert("기존 예시글은 관리자만 수정할 수 있습니다. 새로 올린 글은 작성 비밀번호로 수정할 수 있습니다."); return; }
+    const pw=prompt("게시글 작성 때 입력한 수정 비밀번호를 입력하세요.");
+    if(pw!==p.password){ if(pw!==null) alert("비밀번호가 맞지 않습니다."); return; }
+  }
+  currentCity=p.city;
+  if(cityData[p.city]){
+    const data=cityData[p.city];
+    setPage(`${p.city}문화소식`,`${p.city} 행사·전시·공연 시민참여 문화플랫폼`,`${p.city}문화소식`,`${data.desc} · 시민이 직접 올리고 함께 보는 문화소식`,data.img,`${p.city} 가까운 날짜순 문화소식`,`${p.city} 소식올리기`,`${p.city}의 행사, 전시, 공연, 문화 이야기를 직접 올려주세요.`,`${p.city}문화소식 · 시민참여 문화플랫폼`);
+    showCityActionBar(p.city);
+  }
+  renderPosts();
+  closeModal();
+  if(editingPostId) resetForm();
+  const upload=document.getElementById("upload");
+  upload.style.display="block";
+  document.getElementById("uploadTitle").innerText=`${p.city} 소식 수정하기`;
+  document.getElementById("uploadDesc").innerText="내용을 고친 뒤 ‘수정 저장’을 누르면 기존 게시글이 바뀝니다. 이미지를 새로 선택하지 않으면 기존 이미지가 유지됩니다.";
+  document.getElementById("postType").value=p.type||"행사·축제";
+  document.getElementById("postTitle").value=p.title||"";
+  document.getElementById("postWriter").value=p.writer||"시민";
+  document.getElementById("postPassword").value="";
+  document.getElementById("postStart").value=(p.start&&p.start!=="날짜 미입력")?p.start:"";
+  document.getElementById("postEnd").value=(p.end&&p.end!=="날짜 미입력")?p.end:"";
+  document.getElementById("postPlace").value=(p.place&&p.place!=="장소 미입력")?p.place:"";
+  document.getElementById("postText").value=p.text||"";
+  document.getElementById("imagePreview").innerHTML=p.image?`<img src="${p.image}"><div class="edit-note">새 이미지를 선택하지 않으면 현재 이미지가 유지됩니다.</div>`:"";
+  uploadedImage="";
+  editingPostId=id;
+  document.getElementById("postSubmitButton").innerText="수정 저장";
+  upload.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 function showDetail(id){
   const p=posts.find(x=>x.id===id); if(!p)return;
-  p.views=(p.views||0)+1; if(!comments[id]) comments[id]=[]; savePosts(); renderPosts();
+  p.views=(p.views||0)+1; if(!comments[id]) comments[id]=[]; renderPosts();
   document.getElementById("modalTitle").innerText=p.title;
   document.getElementById("modalBody").innerHTML=`
     <img src="${p.image}">
-    <div class="detail-meta"><p><b>지역:</b> ${p.city}</p><p><b>분류:</b> ${p.type}</p><p><b>기간:</b> ${p.start} ~ ${p.end}</p><p><b>장소:</b> ${p.place}</p><p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0} · <b>댓글:</b> ${(comments[p.id]||[]).length}</p></div>
+    <div class="detail-meta"><p><b>지역:</b> ${p.city}</p><p><b>작성자:</b> ${escapeHtml(p.writer||"시민")}</p><p><b>분류:</b> ${p.type}</p><p><b>기간:</b> ${p.start} ~ ${p.end}</p><p><b>장소:</b> ${p.place}</p><p><b>조회수:</b> ${p.views||0} · <b>좋아요:</b> ${p.likes||0} · <b>댓글:</b> ${(comments[p.id]||[]).length}</p></div>
     <p style="line-height:1.7;white-space:pre-wrap">${escapeHtml(p.text||"등록된 설명이 없습니다.")}</p>
-    <div class="detail-actions"><button class="like-btn" onclick="likePost('${p.id}'); showDetail('${p.id}')">❤️ 좋아요</button><button class="share-btn" onclick="sharePost('${p.id}')">공유하기</button><button class="copy-btn" onclick="copyPostText('${p.id}')">내용 복사</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">관리자 삭제</button>` : ""}</div>
+    <div class="detail-actions"><button class="like-btn" onclick="likePost('${p.id}'); showDetail('${p.id}')">❤️ 좋아요</button><button class="share-btn" onclick="sharePost('${p.id}')">공유하기</button><button class="copy-btn" onclick="copyPostText('${p.id}')">내용 복사</button><button class="edit-btn" style="background:#10b981" onclick="editPost('${p.id}')">작성자 수정</button>${isAdmin ? `<button class="admin-delete-btn" onclick="deletePost('${p.id}')">관리자 삭제</button>` : ""}</div>
     <div class="comment-box"><h4 style="margin:0 0 10px;">댓글</h4><div id="commentList">${(comments[p.id]||[]).map(c=>`<div class="comment-item"><b>${escapeHtml(c.name)}</b>${escapeHtml(c.text)}</div>`).join("")||"댓글이 없습니다."}</div><input id="commentName" placeholder="이름"><textarea id="commentText" placeholder="댓글 내용"></textarea><button class="submit" onclick="addComment('${p.id}')">댓글 등록</button></div>`;
   document.getElementById("modalBg").classList.add("show");
 }
 
 function closeModal(){ document.getElementById("modalBg").classList.remove("show"); }
-function addComment(id){
-  const name=document.getElementById("commentName").value.trim()||"시민";
-  const text=document.getElementById("commentText").value.trim();
-  if(!text){alert("댓글 내용을 입력해주세요.");return;}
-  if(!comments[id]) comments[id]=[];
-  comments[id].push({name,text});
-  savePosts();
-  showDetail(id);
-}
-function likePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; p.likes=(p.likes||0)+1; savePosts(); renderPosts(); }
+function addComment(id){ const name=document.getElementById("commentName").value.trim()||"시민"; const text=document.getElementById("commentText").value.trim(); if(!text){alert("댓글 내용을 입력해주세요.");return;} comments[id].push({name,text}); showDetail(id); }
+function likePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; p.likes=(p.likes||0)+1; renderPosts(); }
 function sharePost(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`[${p.city}문화소식] ${p.title}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n${location.href}`; if(navigator.share){navigator.share({title:p.title,text}).catch(()=>{});} else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert("공유 문구가 복사되었습니다."));} else {prompt("아래 내용을 복사하세요", text);} }
 function copyPostText(id){ const p=posts.find(x=>x.id===id); if(!p)return; const text=`${p.title}\n지역: ${p.city}\n분류: ${p.type}\n기간: ${p.start} ~ ${p.end}\n장소: ${p.place}\n\n${p.text}`; navigator.clipboard.writeText(text).then(()=>alert("내용이 복사되었습니다.")); }
 
@@ -402,6 +410,7 @@ function searchGoogle(){
 function scrollBoard(){ document.getElementById("board").scrollIntoView({behavior:"smooth"}); }
 function scrollUpload(){
   if(currentCity==="전북"){ alert("먼저 14개 시·군 중 하나를 선택해주세요."); return; }
+  if(editingPostId) resetForm();
   const upload=document.getElementById("upload");
   upload.style.display="block";
   document.getElementById("uploadTitle").innerText=`${currentCity} 소식올리기`;
@@ -414,10 +423,10 @@ function closeCultureStoryModal(){ document.getElementById("cultureStoryModal").
 function showCultureStoryList(){ document.getElementById("storyListTab").classList.add("active"); document.getElementById("storyWriteTab").classList.remove("active"); document.getElementById("cultureStoryListBox").style.display="block"; document.getElementById("cultureStoryWriteBox").style.display="none"; renderCultureStories(); }
 function showCultureStoryWrite(){ document.getElementById("storyListTab").classList.remove("active"); document.getElementById("storyWriteTab").classList.add("active"); document.getElementById("cultureStoryListBox").style.display="none"; document.getElementById("cultureStoryWriteBox").style.display="block"; }
 function renderCultureStories(){ const list=document.getElementById("cultureStoryList"); if(!list)return; list.innerHTML=cultureStories.map(s=>`<div class="story-item"><div class="story-item-title">${escapeHtml(s.title)}</div><div class="story-item-meta">${escapeHtml(s.date)} · ${escapeHtml(s.writer)}</div><p>${escapeHtml(s.text)}</p></div>`).join(""); }
-function addCultureStory(){ const title=document.getElementById("storyTitleInput").value.trim(), writer=document.getElementById("storyWriterInput").value.trim()||"시민", text=document.getElementById("storyTextInput").value.trim(); if(!title||!text){alert("제목과 내용을 입력해주세요.");return;} const d=new Date(); cultureStories.unshift({title,writer,text,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`}); saveStories(); document.getElementById("storyTitleInput").value=""; document.getElementById("storyWriterInput").value=""; document.getElementById("storyTextInput").value=""; showCultureStoryList(); }
+function addCultureStory(){ const title=document.getElementById("storyTitleInput").value.trim(), writer=document.getElementById("storyWriterInput").value.trim()||"시민", text=document.getElementById("storyTextInput").value.trim(); if(!title||!text){alert("제목과 내용을 입력해주세요.");return;} const d=new Date(); cultureStories.unshift({title,writer,text,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`}); document.getElementById("storyTitleInput").value=""; document.getElementById("storyWriterInput").value=""; document.getElementById("storyTextInput").value=""; showCultureStoryList(); }
 
 function adminLogin(){ const pw=prompt("관리자 비밀번호를 입력하세요"); if(pw==="1234"){isAdmin=true;alert("관리자 모드가 켜졌습니다.");renderPosts();} else if(pw){alert("비밀번호가 맞지 않습니다.");} }
-function deletePost(id){ if(!isAdmin){alert("관리자 로그인 후 삭제할 수 있습니다.");return;} const post=posts.find(p=>p.id===id); if(!post)return; if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`))return; posts=posts.filter(p=>p.id!==id); delete comments[id]; savePosts(); closeModal(); renderPosts(); alert("게시글이 삭제되었습니다."); }
+function deletePost(id){ if(!isAdmin){alert("관리자 로그인 후 삭제할 수 있습니다.");return;} const post=posts.find(p=>p.id===id); if(!post)return; if(!confirm(`'${post.title}' 게시글을 삭제하시겠습니까?`))return; posts=posts.filter(p=>p.id!==id); delete comments[id]; closeModal(); renderPosts(); alert("게시글이 삭제되었습니다."); }
 function escapeHtml(value){ return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
 init();
